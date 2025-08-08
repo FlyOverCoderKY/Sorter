@@ -1,0 +1,202 @@
+# App.UI - React Frontend Context
+
+## Overview
+This is the React frontend application for the Sorter project, built with TypeScript, Vite, and modern React patterns.
+
+## Technology Stack
+- **React 18** - Latest React with hooks and concurrent features
+- **TypeScript** - Type-safe development
+- **Vite** - Fast build tool and dev server
+- **Headless UI** - Accessible, unstyled components for complex interactions
+- **CSS3** - Modern styling with gradients and animations
+- **ESLint** - Code quality and consistency
+
+## File Structure
+```
+App.UI/
+├── src/
+│   ├── App.tsx           # Main application component
+│   ├── App.css           # Component-specific styles
+│   ├── main.tsx          # Application entry point
+│   └── index.css         # Global styles
+├── public/               # Static assets
+├── index.html            # HTML template
+├── package.json          # Dependencies and scripts
+├── vite.config.ts        # Vite configuration
+├── tsconfig.json         # TypeScript configuration
+├── .eslintrc.cjs         # ESLint rules
+└── README.md            # Documentation
+```
+
+## React/TypeScript Conventions
+
+### Component Structure
+```typescript
+// Use functional components with hooks
+interface ComponentProps {
+  // Define prop types
+}
+
+const Component: React.FC<ComponentProps> = ({ prop1, prop2 }) => {
+  // Use hooks for state and effects
+  const [state, setState] = useState<StateType>(initialState);
+  
+  // Component logic here
+  
+  return (
+    <div className="component">
+      {/* JSX content */}
+    </div>
+  );
+};
+
+export default Component;
+```
+
+### State Management
+- Use `useState` for local component state
+- Use `useEffect` for side effects
+- Consider `useContext` for shared state
+- Use `useCallback` and `useMemo` for performance optimization
+
+### TypeScript Best Practices
+- Define interfaces for all props and state
+- Use proper type annotations
+- Avoid `any` type - use `unknown` or specific types
+- Use union types for multiple possible values
+- Leverage TypeScript's strict mode
+
+### Styling Approach
+- Use CSS modules or styled-components for component styles
+- Follow BEM methodology for class naming
+- Use CSS custom properties for theming
+- Implement responsive design with mobile-first approach
+- Use modern CSS features (Grid, Flexbox, CSS Variables)
+- Use Headless UI for complex interactive components (dropdowns, modals)
+- Implement semantic class names for Headless UI components
+
+## Development Guidelines
+
+### Adding New Components
+1. Create component file in `src/components/` (if creating a new directory)
+2. Define TypeScript interfaces for props
+3. Implement component logic with proper error handling
+4. Add component-specific styles
+5. Export component and add to index if needed
+6. Update documentation
+
+### Component Naming
+- Use PascalCase for component names
+- Use descriptive names that indicate purpose
+- Group related components in folders
+- Use index files for clean imports
+
+### Code Quality
+- Follow ESLint rules
+- Use consistent naming conventions
+- Write meaningful comments
+- Include proper error handling
+- Test components thoroughly
+
+## Sorting Application Specifics
+
+### Data Structures
+- Focus on efficient sorting algorithms
+- Consider performance for large datasets
+- Implement various sorting methods (bubble, quick, merge, etc.)
+- Provide visual feedback during sorting process
+
+### User Experience
+- Implement smooth animations for sorting visualization
+- Provide clear feedback for user actions
+- Consider accessibility (ARIA labels, keyboard navigation)
+- Ensure responsive design for all screen sizes
+
+### Performance Considerations
+- Use React.memo for expensive components
+- Implement proper key props for lists
+- Consider virtualization for large datasets
+- Optimize re-renders with useCallback/useMemo
+
+## Common Patterns
+
+### Form Handling
+```typescript
+const [formData, setFormData] = useState<FormData>({});
+
+const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = e.target;
+  setFormData(prev => ({ ...prev, [name]: value }));
+};
+```
+
+### API Integration
+```typescript
+const [data, setData] = useState<DataType[]>([]);
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState<string | null>(null);
+
+const fetchData = async () => {
+  setLoading(true);
+  try {
+    const response = await fetch('/api/data');
+    const result = await response.json();
+    setData(result);
+  } catch (err) {
+    setError(err instanceof Error ? err.message : 'An error occurred');
+  } finally {
+    setLoading(false);
+  }
+};
+```
+
+### Error Boundaries
+```typescript
+class ErrorBoundary extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+    return this.props.children;
+  }
+}
+```
+
+## Testing Strategy
+- Write unit tests for utility functions
+- Test component rendering and interactions
+- Mock external dependencies
+- Test error scenarios
+- Ensure accessibility compliance
+
+## Build and Deployment
+- Use `npm run build` for production builds
+- Optimize bundle size
+- Implement proper caching strategies
+- Consider CDN for static assets
+- Monitor performance metrics
+
+## Development Workflow Guidelines
+
+### Starting the Development Server
+- **ALWAYS** use the correct PowerShell syntax: `cd "Sorter/App.UI"; npm run dev`
+- **NEVER** use `&&` in PowerShell - use `;` for command chaining
+- **TRUST** the first successful output - if the server starts, don't make additional attempts
+- **RECOGNIZE** successful startup by looking for "VITE ready" and localhost URL in output
+- **STOP** after successful startup - don't overcomplicate with unnecessary commands
+
+### Problem-Solving Approach
+- **READ** terminal output carefully before making additional attempts
+- **IDENTIFY** the actual issue (syntax, missing files, etc.) before trying solutions
+- **USE** the simplest solution that works
+- **AVOID** making multiple redundant attempts when the first one succeeds
+- **FOLLOW** the principle of "do the minimum necessary to achieve the goal"

@@ -1,0 +1,663 @@
+/* Import Inter font for better typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  
+  /* Theme transition control */
+  --theme-transition-duration: 0.3s;
+  --theme-transition-timing: ease;
+  --theme-transition-properties: background-color, color, border-color, box-shadow;
+}
+
+/* Light theme (default) */
+:root[data-theme="light"] {
+  /* Background colors */
+  --color-page-background: #ffffff;
+  --color-panel-background: #f8fafc;
+  --color-overlay-background: #ffffff;
+  
+  /* Text colors */
+  --color-foreground: #0f172a;
+  --color-foreground-muted: #475569;
+  --color-foreground-subtle: #64748b;
+  
+  /* Border colors */
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-border-subtle: #f1f5f9;
+  
+  /* Accent colors (will be overridden by theme system) */
+  --color-accent: #3b82f6;
+  --color-accent-foreground: #ffffff;
+  
+  /* Interactive colors */
+  --color-hover: #f8fafc;
+  --color-hover-strong: #f1f5f9;
+  --color-active: #e2e8f0;
+  
+  /* Status colors */
+  --color-success: #10b981;
+  --color-success-foreground: #ffffff;
+  --color-warning: #f59e0b;
+  --color-warning-foreground: #ffffff;
+  --color-error: #ef4444;
+  --color-error-foreground: #ffffff;
+  --color-info: #3b82f6;
+  --color-info-foreground: #ffffff;
+  
+  /* Shadow colors */
+  --color-shadow: rgba(0, 0, 0, 0.1);
+  --color-shadow-strong: rgba(0, 0, 0, 0.15);
+  --color-shadow-subtle: rgba(0, 0, 0, 0.05);
+  
+  /* Code colors */
+  --color-code-background: #f1f5f9;
+  --color-code-foreground: #0f172a;
+  --color-code-border: #e2e8f0;
+  
+  /* Additional utility colors */
+  --color-surface: #ffffff;
+  --color-surface-hover: #f8fafc;
+  --color-input-background: #ffffff;
+  --color-input-border: #e2e8f0;
+  --color-input-border-focus: #3b82f6;
+  --color-disabled: #94a3b8;
+  --color-disabled-foreground: #64748b;
+}
+
+/* Dark theme */
+:root[data-theme="dark"] {
+  /* Background colors */
+  --color-page-background: #0f172a;
+  --color-panel-background: #1e293b;
+  --color-overlay-background: #334155;
+  
+  /* Text colors */
+  --color-foreground: #f8fafc;
+  --color-foreground-muted: #cbd5e1;
+  --color-foreground-subtle: #94a3b8;
+  
+  /* Border colors */
+  --color-border: #334155;
+  --color-border-strong: #475569;
+  --color-border-subtle: #1e293b;
+  
+  /* Accent colors (will be overridden by theme system) */
+  --color-accent: #60a5fa;
+  --color-accent-foreground: #0f172a;
+  
+  /* Interactive colors */
+  --color-hover: #1e293b;
+  --color-hover-strong: #334155;
+  --color-active: #475569;
+  
+  /* Status colors */
+  --color-success: #34d399;
+  --color-success-foreground: #0f172a;
+  --color-warning: #fbbf24;
+  --color-warning-foreground: #0f172a;
+  --color-error: #f87171;
+  --color-error-foreground: #0f172a;
+  --color-info: #60a5fa;
+  --color-info-foreground: #0f172a;
+  
+  /* Shadow colors */
+  --color-shadow: rgba(0, 0, 0, 0.3);
+  --color-shadow-strong: rgba(0, 0, 0, 0.4);
+  --color-shadow-subtle: rgba(0, 0, 0, 0.2);
+  
+  /* Code colors */
+  --color-code-background: #334155;
+  --color-code-foreground: #f8fafc;
+  --color-code-border: #475569;
+  
+  /* Additional utility colors */
+  --color-surface: #1e293b;
+  --color-surface-hover: #334155;
+  --color-input-background: #1e293b;
+  --color-input-border: #475569;
+  --color-input-border-focus: #60a5fa;
+  --color-disabled: #475569;
+  --color-disabled-foreground: #64748b;
+}
+
+/* Fallback values for when theme is not set */
+:root:not([data-theme]) {
+  --color-page-background: #ffffff;
+  --color-panel-background: #f8fafc;
+  --color-overlay-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-foreground-muted: #475569;
+  --color-foreground-subtle: #64748b;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-border-subtle: #f1f5f9;
+  --color-accent: #3b82f6;
+  --color-accent-foreground: #ffffff;
+  --color-hover: #f8fafc;
+  --color-hover-strong: #f1f5f9;
+  --color-active: #e2e8f0;
+  --color-success: #10b981;
+  --color-success-foreground: #ffffff;
+  --color-warning: #f59e0b;
+  --color-warning-foreground: #ffffff;
+  --color-error: #ef4444;
+  --color-error-foreground: #ffffff;
+  --color-info: #3b82f6;
+  --color-info-foreground: #ffffff;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+  --color-shadow-strong: rgba(0, 0, 0, 0.15);
+  --color-shadow-subtle: rgba(0, 0, 0, 0.05);
+  --color-code-background: #f1f5f9;
+  --color-code-foreground: #0f172a;
+  --color-code-border: #e2e8f0;
+  
+  /* Additional utility colors */
+  --color-surface: #ffffff;
+  --color-surface-hover: #f8fafc;
+  --color-input-background: #ffffff;
+  --color-input-border: #e2e8f0;
+  --color-input-border-focus: #3b82f6;
+  --color-disabled: #94a3b8;
+  --color-disabled-foreground: #64748b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-page-background);
+  color: var(--color-foreground);
+  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing), 
+              color var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Base typography with theme support */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-foreground);
+  transition: color 0.3s ease;
+}
+
+p, span, div {
+  color: inherit;
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease, 
+              box-shadow 0.3s ease;
+}
+
+/* Disable transitions for specific properties to avoid performance issues */
+*, *::before, *::after {
+  transition-property: var(--theme-transition-properties);
+  transition-timing-function: var(--theme-transition-timing);
+  transition-duration: var(--theme-transition-duration);
+}
+
+/* Performance optimization: disable transitions for elements that don't need them */
+img, svg, canvas, video {
+  transition: none;
+}
+
+/* Accessibility: ensure focus indicators are always visible */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  transition: outline 0.1s ease;
+}
+
+/* Enhanced focus management for better accessibility */
+:focus-visible:not(:focus-visible) {
+  outline: none;
+}
+
+/* Ensure focus is visible on all interactive elements */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :focus-visible {
+    outline: 3px solid var(--color-foreground);
+    outline-offset: 3px;
+  }
+  
+  /* Ensure sufficient contrast in high contrast mode */
+  body {
+    background-color: var(--color-page-background);
+    color: var(--color-foreground);
+  }
+  
+  /* Enhance borders for better visibility */
+  * {
+    border-color: var(--color-border-strong) !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --theme-transition-duration: 0s;
+  }
+  
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Focus styles with theme support - now handled above */
+
+/* Selection styles with theme support */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+/* Scrollbar styling with theme support */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-panel-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border);
+}
+
+.accent-color-preview {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  border: 1px solid var(--color-border);
+  transition: border-color 0.3s ease;
+}
+
+/* Ensure accent color previews are visible in both themes */
+:root[data-theme="dark"] .accent-color-preview {
+  border-color: var(--color-border-strong);
+  box-shadow: 0 0 0 1px var(--color-border-strong);
+}
+
+:root[data-theme="light"] .accent-color-preview {
+  border-color: var(--color-border);
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+/* Enhanced accent color preview styling */
+.accent-color-preview {
+  position: relative;
+  overflow: hidden;
+}
+
+.accent-color-preview::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+/* Print styles */
+@media print {
+  .sorting-visualizer {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .control-section,
+  .explanation-section {
+    display: none !important;
+  }
+  
+  .visualization-section {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+  }
+  
+  /* Ensure print readability */
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Utility classes for theme debugging and development */
+.theme-debug {
+  border: 2px dashed var(--color-accent);
+  background: var(--color-panel-background);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+/* Ensure theme variables are always available */
+.theme-fallback {
+  background-color: var(--color-page-background, #ffffff);
+  color: var(--color-foreground, #000000);
+}
+
+/* Mobile-specific theme optimizations */
+@media (max-width: 768px) {
+  :root {
+    --theme-transition-duration: 0.2s;
+    /* Reduce shadow intensity on mobile for better performance */
+    --color-shadow: rgba(0, 0, 0, 0.08);
+    --color-shadow-strong: rgba(0, 0, 0, 0.12);
+    --color-shadow-subtle: rgba(0, 0, 0, 0.04);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase touch targets */
+  button, input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Ensure sufficient spacing for touch */
+  .control-section, .visualization-section, .explanation-section {
+    padding: 1rem;
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Ensure crisp borders on high DPI displays */
+  * {
+    border-width: 0.5px;
+  }
+}
+
+/* Loading state theme support */
+.theme-loading {
+  opacity: 0.7;
+  transition: opacity var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+.theme-loading.loaded {
+  opacity: 1;
+}
+
+/* Theme transition states */
+.theme-transitioning {
+  transition: all var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Ensure smooth theme changes for specific elements */
+.theme-smooth {
+  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing),
+              color var(--theme-transition-duration) var(--theme-transition-timing),
+              border-color var(--theme-transition-duration) var(--theme-transition-timing),
+              box-shadow var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Error state theme support */
+.theme-error {
+  background-color: var(--color-error);
+  color: var(--color-error-foreground);
+  border-color: var(--color-error);
+}
+
+/* Success state theme support */
+.theme-success {
+  background-color: var(--color-success);
+  color: var(--color-success-foreground);
+  border-color: var(--color-success);
+}
+
+/* Warning state theme support */
+.theme-warning {
+  background-color: var(--color-warning);
+  color: var(--color-warning-foreground);
+  border-color: var(--color-warning);
+}
+
+/* Info state theme support */
+.theme-info {
+  background-color: var(--color-info);
+  color: var(--color-info-foreground);
+  border-color: var(--color-info);
+}
+
+/* Disabled state theme support */
+.theme-disabled {
+  background-color: var(--color-disabled);
+  color: var(--color-disabled-foreground);
+  border-color: var(--color-disabled);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Hover state theme support */
+.theme-hover:hover {
+  background-color: var(--color-hover);
+}
+
+.theme-hover-strong:hover {
+  background-color: var(--color-hover-strong);
+}
+
+/* Active state theme support */
+.theme-active:active {
+  background-color: var(--color-active);
+}
+
+/* Focus state theme support */
+.theme-focus:focus {
+  border-color: var(--color-input-border-focus);
+  box-shadow: 0 0 0 3px var(--color-shadow);
+}
+
+/* Theme loading animation */
+@keyframes theme-loading-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.theme-loading-pulse {
+  animation: theme-loading-pulse 1.5s ease-in-out infinite;
+}
+
+/* Theme transition overlay */
+.theme-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-overlay-background);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--theme-transition-duration) var(--theme-transition-timing);
+  z-index: 9999;
+}
+
+.theme-transition-overlay.active {
+  opacity: 0.1;
+  pointer-events: auto;
+}
+
+/* Ensure theme consistency across all elements */
+* {
+  /* Force theme variables to be inherited */
+  color: inherit;
+  background-color: inherit;
+  border-color: inherit;
+}
+
+/* Theme Switcher Button specific styles */
+.theme-switcher-button {
+  background-color: var(--color-panel-background) !important;
+  color: var(--color-foreground) !important;
+  border: 1px solid var(--color-border) !important;
+  box-shadow: 0 1px 3px var(--color-shadow) !important;
+  transition: all 0.3s ease !important;
+}
+
+.theme-switcher-button:hover {
+  background-color: var(--color-hover) !important;
+  box-shadow: 0 2px 6px var(--color-shadow-strong) !important;
+}
+
+/* Dark theme specific button styles */
+:root[data-theme="dark"] .theme-switcher-button {
+  background-color: var(--color-panel-background) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Light theme specific button styles */
+:root[data-theme="light"] .theme-switcher-button {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Ensure button content is properly themed */
+.theme-switcher-button svg {
+  color: var(--color-foreground) !important;
+}
+
+.theme-switcher-button span {
+  color: var(--color-foreground) !important;
+}
+
+/* Enhanced focus and accessibility styles */
+.theme-switcher-button:focus-visible {
+  outline: 2px solid var(--color-accent) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px var(--color-shadow) !important;
+}
+
+/* Ensure proper contrast for accessibility */
+.theme-switcher-button {
+  font-weight: 500 !important;
+  letter-spacing: 0.025em !important;
+}
+
+/* Dark theme button specific enhancements */
+:root[data-theme="dark"] .theme-switcher-button {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light theme button specific enhancements */
+:root[data-theme="light"] .theme-switcher-button {
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Responsive theme switcher button */
+@media (max-width: 768px) {
+  .theme-switcher-button {
+    padding: 0.375rem 0.75rem !important;
+    font-size: 0.875rem !important;
+  }
+  
+  .theme-switcher-button span {
+    display: none !important;
+  }
+  
+  .theme-switcher-button svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+
+/* High contrast mode support for theme switcher */
+@media (prefers-contrast: high) {
+  .theme-switcher-button {
+    border-width: 2px !important;
+    outline: 2px solid var(--color-foreground) !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* Theme switcher button loading state */
+.theme-switcher-button.loading {
+  opacity: 0.7 !important;
+  cursor: wait !important;
+  pointer-events: none !important;
+}
+
+/* Theme switcher button disabled state */
+.theme-switcher-button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+/* Ensure proper theme transition for the button */
+.theme-switcher-button {
+  transition: all 0.3s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Hover effects for the theme switcher button */
+.theme-switcher-button:hover {
+  transform: translateY(-1px) !important;
+}
+
+.theme-switcher-button:active {
+  transform: translateY(0) !important;
+}
+
+/* Ensure proper spacing and alignment in the theme switcher button */
+.theme-switcher-button {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+}
+
+/* Theme switcher button icon styles */
+.theme-switcher-button svg {
+  flex-shrink: 0 !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Override for specific elements that need explicit theming */
+input, textarea, select, button {
+  color: var(--color-foreground);
+  background-color: var(--color-input-background);
+  border-color: var(--color-input-border);
+}
+

@@ -1,0 +1,16 @@
+/* Gradient background */
+.gradient-bg {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-a5) 100%, transparent),
+    color-mix(in srgb, var(--accent-a8) 100%, transparent)
+  );
+  transition: background 0.3s ease;
+}
+
+/* Responsive text adjustments */
+@media (max-width: 520px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,220 @@
+# Sorter Project - Cursor Context
+
+## Project Overview
+This is a comprehensive sorting application with a modern React frontend (App.UI) and API backend (App.API). The project is organized into separate modules for better maintainability and scalability.
+
+## Project Structure
+```
+Sorter/
+├── App.UI/                    # React frontend application
+│   ├── src/                   # React source code
+│   │   ├── App.tsx           # Main application component
+│   │   ├── App.css           # Component styles
+│   │   ├── main.tsx          # Application entry point
+│   │   └── index.css         # Global styles
+│   ├── index.html            # HTML template
+│   ├── package.json          # Frontend dependencies
+│   ├── vite.config.ts        # Vite configuration
+│   ├── tsconfig.json         # TypeScript configuration
+│   ├── .eslintrc.cjs         # ESLint configuration
+│   └── README.md            # Frontend documentation
+├── App.API/                  # Backend API services
+│   └── ...                   # API source code and configuration
+└── README.md                # Root project documentation
+```
+
+## Technology Stack
+
+### Frontend (App.UI)
+- **React 18** - UI library with modern hooks
+- **TypeScript** - Type safety and better development experience
+- **Vite** - Fast build tool and development server
+- **Radix UI Themes** - Component library and design system
+- **CSS3** - Modern styling with gradients and animations
+- **ESLint** - Code linting and quality
+
+### Backend (App.API)
+- TBD - To be determined based on requirements
+
+## Development Environment
+
+### PowerShell Command Syntax
+**IMPORTANT**: This project runs on Windows with PowerShell, which does NOT support the `&&` operator for command chaining.
+
+**❌ Incorrect (bash syntax that doesn't work in PowerShell):**
+```bash
+cd Sorter/App.UI && npm run dev
+```
+
+**✅ Correct PowerShell syntax:**
+```powershell
+cd Sorter/App.UI
+npm run dev
+```
+
+**Alternative PowerShell options:**
+```powershell
+# Option 1: Separate commands (recommended)
+cd Sorter/App.UI
+npm run dev
+
+# Option 2: Semicolon separator
+cd Sorter/App.UI; npm run dev
+
+# Option 3: Pipeline with Invoke-Expression
+cd Sorter/App.UI | Invoke-Expression; npm run dev
+```
+
+**Remember**: Always use PowerShell-compatible syntax when suggesting terminal commands for this Windows environment.
+
+### Automation and Background Commands
+**For automated execution (like with run_terminal_cmd tool):**
+- Use semicolon-separated commands: `cd Sorter/App.UI; npm run dev`
+- This allows the entire command to run as a single background process
+- Avoid separate command calls that may not execute properly in automation
+
+**For manual execution:**
+- Separate commands work fine: `cd Sorter/App.UI` then `npm run dev`
+- This gives better visibility into each step
+
+## Coding Conventions
+
+### Component Library Usage
+- Always use Radix UI Themes components over primitives unless specifically required
+- Only use Radix UI primitives when custom behavior or styling is explicitly needed
+- Follow Radix UI Themes documentation for component props and patterns
+- Maintain consistent component styling across the application
+
+### TypeScript/React
+- Use functional components with hooks
+- Prefer TypeScript interfaces over types for object shapes
+- Use proper type annotations for all props and state
+- Follow React best practices for component structure
+- Use modern React patterns (hooks, context, etc.)
+
+### Styling
+- Use Radix UI Themes for consistent component styling
+- Use CSS modules or styled-components for custom component styles
+- Follow BEM methodology for custom CSS class naming
+- Use CSS custom properties for theming
+- Implement responsive design with mobile-first approach
+
+### File Organization
+- Group related components in folders
+- Use index files for clean imports
+- Separate business logic from UI components
+- Keep components small and focused
+
+### Code Quality
+- Use ESLint for code linting
+- Follow consistent naming conventions
+- Write meaningful commit messages
+- Include proper error handling
+
+## Development Workflow
+
+### Quick App Startup
+**For immediate app startup (when dependencies are already installed):**
+
+**Option 1: Single command with semicolon (recommended for automation):**
+```powershell
+cd Sorter/App.UI; npm run dev
+```
+
+**Option 2: Separate commands (for manual execution):**
+```powershell
+cd Sorter/App.UI
+npm run dev
+```
+
+**Option 3: Using PowerShell pipeline (alternative):**
+```powershell
+cd Sorter/App.UI | Invoke-Expression; npm run dev
+```
+
+The app will be available at: `http://localhost:5173`
+
+### Full Frontend Development Setup
+1. Navigate to `App.UI` directory: `cd Sorter/App.UI`
+2. Run `npm install` to install dependencies (only needed first time or when dependencies change)
+3. Run `npm run dev` to start development server
+4. Access application at `http://localhost:5173`
+
+### Backend Development
+1. Navigate to `App.API` directory: `cd Sorter/App.API`
+2. Follow API-specific setup instructions
+3. Implement RESTful API endpoints
+4. Ensure proper error handling and validation
+
+## Common Commands
+
+### Quick Commands
+```powershell
+# Start the app (automation-friendly single command)
+cd Sorter/App.UI; npm run dev
+
+# Install dependencies (if needed)
+cd Sorter/App.UI; npm install
+
+# Build for production
+cd Sorter/App.UI; npm run build
+
+# Run linting
+cd Sorter/App.UI; npm run lint
+```
+
+## Common Tasks
+1. Check Radix UI Themes documentation for suitable components
+2. Create component file in appropriate directory
+3. Use Radix UI Themes components as building blocks
+4. Add TypeScript interfaces for props
+5. Implement component logic
+6. Add custom styling only when necessary
+7. Export component and add to index if needed
+
+### Adding New Features
+1. Plan feature architecture
+2. Create necessary components/services
+3. Implement business logic
+4. Add proper error handling
+5. Write tests if applicable
+6. Update documentation
+
+### Styling Guidelines
+- Use Radix UI Themes tokens and variables
+- Use modern CSS features (Grid, Flexbox, CSS Variables)
+- Implement responsive design
+- Follow accessibility guidelines
+- Use consistent spacing and typography
+- Maintain visual hierarchy
+
+## Project-Specific Notes
+
+### Sorting Application Focus
+- This is a sorting application, so focus on algorithms and data structures
+- Consider performance for large datasets
+- Implement various sorting algorithms
+- Provide visual feedback for sorting process
+- Consider user experience for different data types
+
+### Architecture Decisions
+- Separated frontend and backend for scalability
+- Use modern web technologies for better performance
+- Implement proper error handling and user feedback
+- Consider future extensibility
+
+## AI Assistance Guidelines
+- Always prefer Radix UI Themes components over primitives
+- Only suggest primitive components when specifically asked
+- **Always use PowerShell-compatible command syntax for Windows environment**
+- Never suggest commands using `&&` operator (bash syntax)
+
+When working with this project:
+- Always consider the modular structure (App.UI vs App.API)
+- Suggest TypeScript-first solutions
+- Recommend modern React patterns
+- Consider performance implications for sorting algorithms
+- Maintain consistency with existing code style
+- Focus on user experience and accessibility
+- Suggest proper error handling and validation
+- Use PowerShell syntax for all terminal commands
