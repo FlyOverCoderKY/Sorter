@@ -139,7 +139,7 @@ function* merge(arr: number[], left: number, mid: number, right: number): Genera
       timestamp: Date.now()
     };
     
-    if (rightArray[j] < leftArray[i]) {
+    if (rightArray[j] > leftArray[i]) {
       arr[k] = leftArray[i];
       i++;
     } else {

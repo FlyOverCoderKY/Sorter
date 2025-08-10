@@ -10,8 +10,9 @@ export function ThemeSwitcher({
   appearance,
   onAppearanceChange,
 }: ThemeSwitcherProps) {
-  const theme = useTheme()
-  const isDark = theme.resolvedAppearance === 'dark'
+  // Ensure ThemeContext is initialized to respond to theme changes,
+  // even though we only need the setter from parent props here.
+  useTheme()
 
   const getAppearanceIcon = () => {
     switch (appearance) {

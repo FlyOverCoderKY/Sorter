@@ -3,6 +3,12 @@
 ## Overview
 This application will provide an interactive visualization of various sorting algorithms, helping users understand how different sorting methods work by displaying the process in real-time with configurable speeds. The application includes comprehensive theme support with light/dark modes and smooth transitions.
 
+## Assumptions
+- Single-page application (SPA) with no backend dependency (current scope).
+- Modern browsers with Web Worker support; graceful handling when metrics APIs are unavailable.
+- Limited concurrent users; minimal-cost Azure hosting (Static Web Apps Free) targeted for MVP.
+- Theme and accessibility standards apply to all new features.
+
 ## Core Features
 
 ### 1. Algorithm Selection
@@ -136,6 +142,10 @@ Each sorting algorithm will be implemented as a separate module with:
 - Audio feedback options
 - **Reduced motion support** for theme transitions
 
+## Work Plan by Phases
+
+### Completed Phases
+
 ## Development Phases
 
 ### Phase 1: Core Architecture ✅ **COMPLETE**
@@ -169,14 +179,16 @@ Each sorting algorithm will be implemented as a separate module with:
 5. ✅ Add pseudo-code display
 6. ✅ **Theme-aware color coding and animations**
 
-### Phase 5: Testing & Optimization ✅ **COMPLETE**
-1. ✅ Implement unit tests for algorithms
-2. ✅ Add visual regression tests
-3. ✅ Add accessibility testing
-4. ✅ Optimize memory usage
-5. ✅ Cross-browser testing
-6. ✅ Performance benchmarking
-7. ✅ **Theme system testing and optimization**
+### Pre‑MVP Phases
+
+#### Phase 5: Testing & Optimization (Required for MVP)
+- Implement unit tests for algorithms (worker-level)
+- Add visual regression tests (key states)
+- Add accessibility testing (contrast, focus, screen reader)
+- Optimize memory usage and check for leaks
+- Cross-browser smoke tests
+- Add basic performance benchmarks
+- Theme system testing across light/dark/system and reduced motion
 
 ### Phase 6: Theme System Implementation ✅ **COMPLETE**
 1. ✅ **Foundation CSS Variables**: Comprehensive color system
@@ -244,20 +256,193 @@ Each sorting algorithm will be implemented as a separate module with:
   - Mobile theme support
   - Performance during theme changes
 
-## Future Enhancements
-- Additional sorting algorithms
-- Algorithm comparison mode
-- Custom input arrays
-- Sound effects for operations
-- **Enhanced Theme Features**:
-  - Custom color schemes
-  - Theme presets
-  - Animated theme transitions
-  - Theme-aware charts and graphs
-- Performance comparison charts
-- Algorithm complexity visualizations
-- Save/share functionality
-- Custom array patterns
+## Release Phases
+
+### Pre‑MVP Bug Fixes & Hardening
+- Fix step-by-step Merge Sort comparison logic in `SortingVisualizer.tsx` (align with worker).
+- Guard memory usage metric when unsupported; display N/A.
+- Verify Web Worker behavior in production (no cross-origin issues).
+- Ensure SPA fallback works on deep links/refresh.
+
+### Pre‑MVP MVP Quick Wins
+- Invariant overlays per algorithm (sorted regions, active ranges).
+- Stability demonstration mode (duplicate labels and order preservation).
+- Data pattern presets (reversed, nearly sorted %, few unique k, organ pipe, sawtooth, Gaussian, duplicates-heavy).
+- Step history with next/prev and timeline scrubber (bounded memory).
+- Split-view Algorithm Race with minimal charts; synchronized controls.
+
+### Pre‑MVP Deployment Setup
+- Configure CI build workflow (Node 18) for `Sorter/App.UI`.
+- Connect repository to Azure Static Web Apps (Free) and verify portal workflow.
+- Confirm output path `dist` and app path `Sorter/App.UI`.
+
+### MVP Release (V1)
+- Deploy to Azure Static Web Apps following the Deployment Plan.
+- Acceptance Criteria:
+  - Sorting works in production for Bubble, Selection, Insertion, Merge (run and step modes).
+  - No console errors; worker steps stream and complete.
+  - Theme switching persists and respects system settings.
+  - SPA routes refresh correctly; deep links load.
+  - Keyboard navigation and ARIA live updates work.
+  - CI build on main passes; deployment is automatic and public.
+
+## Post‑Release Phases
+
+### Phase 7: Additional Sorting Algorithms (Planned)
+
+### Goals
+- Broaden educational coverage by adding a diverse set of sorting algorithms.
+- Maintain smooth, theme-aware visualization with consistent step semantics.
+- Keep complexity manageable by staging algorithms based on required UI/tooling.
+
+### Categories and Tooling Impact
+
+- Group A — Drop-in comparison sorts (no new UI required):
+  - Use existing `SortingStep` types (`compare`, `swap`, `select`, `insert`, `merge`) and bar visualization.
+  - Optional semantic types for clarity can be introduced later, but not required to ship.
+
+- Group B — Non-comparison/bucketed sorts (auxiliary overlay panel recommended):
+  - Require an additional, collapsible panel to visualize buckets/count arrays.
+  - Prefer extending `SortingStep['type']` with: `count`, `bucket`, `collect`, `write`.
+
+- Group C — Advanced/hybrid algorithms (new state or visualization modules):
+  - May require recursion depth indicators, run detection, merge stack view, or specialized diagrams (heaps, networks, trees).
+  - Consider extending step types: `partition`, `heapify`, `gap`, and a generic `note` step for algorithm-specific context.
+
+- Group D — Educational/novelty algorithms (guardrails required):
+  - Add explicit max-step/time safeguards to prevent runaway sessions.
+
+### Proposed Algorithms (with implementation notes)
+
+- Quick Sort (Lomuto/Hoare/3-way)
+  - Category: Group A (3-way still fits bars, but adds equal partition awareness)
+  - Stable: No; In-place: Yes (typical implementations)
+  - Time: best/avg O(n log n), worst O(n²); Space: O(log n) recursion
+  - Step types: `select` (pivot), `compare`, `swap`; optional `partition`
+  - Notes: highlight pivot; consider variant toggle (Lomuto/Hoare/3-way); recursion depth optional badge
+
+- Heap Sort
+  - Category: Group A (optional Group C heap overlay later)
+  - Stable: No; In-place: Yes
+  - Time: O(n log n); Space: O(1)
+  - Step types: `compare`, `swap`; optional `heapify`
+  - Notes: can visualize purely in the array; future: optional heap tree overlay
+
+- Shell Sort (gap sequences: Knuth, Ciura)
+  - Category: Group A
+  - Stable: No; In-place: Yes
+  - Time: sequence-dependent; commonly ~O(n^(3/2)) to O(n log² n)
+  - Step types: `compare`, `swap`; optional `gap` note
+  - Notes: expose gap sequence config in UI (later)
+
+- Comb Sort
+  - Category: Group A
+  - Stable: No; In-place: Yes; Time: O(n²) average; Space: O(1)
+  - Step types: `compare`, `swap`; notes: shrink factor (≈1.3)
+
+- Cocktail Shaker Sort (bidirectional bubble)
+  - Category: Group A
+  - Stable: No; In-place: Yes; Time: O(n²); Space: O(1)
+  - Step types: `compare`, `swap`; notes: forward/backward passes
+
+- Gnome Sort
+  - Category: Group A
+  - Stable: No; In-place: Yes; Time: O(n²); Space: O(1)
+  - Step types: `compare`, `swap`
+
+- Odd-Even Sort (Brick Sort)
+  - Category: Group A
+  - Stable: No; In-place: Yes; Time: O(n²); Space: O(1)
+  - Step types: `compare`, `swap`; notes: odd/even phase indicator
+
+- Stable Selection Sort (with shifts)
+  - Category: Group A
+  - Stable: Yes; In-place: No (needs shifting) or O(1) extra with trade-offs
+  - Time: O(n²); Space: O(n) if using aux; Step types: `select`, `insert`, `compare`
+  - Notes: reuse `insert` for element reposition
+
+- Counting Sort
+  - Category: Group B
+  - Stable: Yes; In-place: No
+  - Time: O(n + k); Space: O(n + k) (k = range)
+  - Step types: `count` (tally), `write` (output), `collect` (prefix-sum)
+  - UI: counts array panel; constrain data range or scale
+  - Notes: our values are 10–300; feasible; add fallback when k large
+
+- Radix Sort (LSD/MSD, base-10)
+  - Category: Group B
+  - Stable: Yes (with stable counting per digit); In-place: No
+  - Time: O((n + b)·d); Space: O(n + b)
+  - Step types: `bucket` (by digit), `collect`, `write`
+  - UI: buckets panel; Notes: digit extractor utility; choose LSD first
+
+- Bucket Sort
+  - Category: Group B
+  - Stable: Depends on bucket sort subroutine; In-place: No
+  - Time: expected O(n) (distribution-dependent); Space: O(n)
+  - Step types: `bucket` (assign), `insert` (within-bucket sort)
+  - UI: buckets panel; Notes: consider insertion sort for each bucket
+
+- Pigeonhole Sort
+  - Category: Group B
+  - Stable: Yes; In-place: No
+  - Time: O(n + N) where N is value range; Space: O(N)
+  - Step types: `count`/`write`
+  - UI: holes panel similar to counting sort
+
+- Natural Merge Sort (run detection)
+  - Category: Group C (requires run highlighting)
+  - Stable: Yes; In-place: No (array aux); Time: O(n log n)
+  - Step types: `select` (runs), `merge`; UI: indicate discovered runs
+
+- IntroSort (Quick + Heap + Insertion)
+  - Category: Group C
+  - Stable: No; In-place: Yes
+  - Time: O(n log n) worst; Space: O(log n)
+  - Step types: `select` (pivot), `compare`, `swap`, `note` (algorithm switch), optional `heapify`
+  - UI: show recursion depth and switch threshold indicators
+
+- TimSort
+  - Category: Group C (complex)
+  - Stable: Yes; In-place: No (aux merges)
+  - Time: O(n) best (presorted), O(n log n) worst; Space: O(n)
+  - Step types: `select` (runs), `merge`, `note` (galloping)
+  - UI: run stack visualization recommended; schedule for later milestone
+
+- Bitonic Sort / Sorting Network (optional)
+  - Category: Group C (benefits from network diagram)
+  - Stable: No; In-place: Yes; Time: O(n log² n)
+  - Step types: `compare`, `swap`; UI: network overlay ideal; otherwise keep as odd-even first
+
+- Tree Sort (BST-based)
+  - Category: Group C (tree visualization)
+  - Stable: No; In-place: No; Time: avg O(n log n), worst O(n²)
+  - Step types: `insert` (tree), `collect`; UI: BST diagram recommended; defer unless tree view added
+
+- Bogo Sort / Bozo Sort / Stooge Sort (novelty)
+  - Category: Group D
+  - Stable: N/A; In-place: varies; Time: enormous expected
+  - Step types: `compare`, `swap`, `note` (attempts)
+  - Guard: enforce max steps/time and explicit user confirmation
+
+### Tooling/UX Updates to Support This Phase
+
+- Extend `SortingStep['type']` (non-breaking): add `partition`, `heapify`, `count`, `bucket`, `collect`, `write`, `gap`, `note`.
+- Add theme-aware colors for the new step types in CSS and integrate with `BarDisplay` mapping.
+- Optional auxiliary visualization slot:
+  - A right/left collapsible `AlgorithmOverlay` panel for buckets/counts/heap views; hidden for Group A.
+- Configuration additions:
+  - Quick Sort: pivot strategy toggle; Shell Sort: gap sequence selection; Radix: digit base.
+- Safeguards:
+  - Global max step/time budget for Group D; show warning before start.
+- Data constraints:
+  - For counting/radix/bucket sorts, ensure value ranges remain tractable; otherwise show guidance or auto-sample.
+
+### Acceptance Criteria (Phase 7)
+- At least 4 Group A algorithms implemented with step generators and worker integration.
+- One Group B algorithm (Counting or Radix) implemented with an overlay panel and extended step types.
+- Colors and a11y are preserved for all new step types; theme transitions remain smooth.
+- CI build stays green; production deploy via Azure Static Web Apps continues to succeed.
 
 ## Theme Implementation Guidelines ⭐ **DEVELOPMENT STANDARDS**
 
@@ -313,3 +498,154 @@ const NewComponent = () => {
 **Last Updated**: December 2024  
 **Theme Status**: ✅ **FULLY IMPLEMENTED** - All new features must use theme system  
 **Next Phase**: Additional algorithms and features (with theme integration required)
+
+## Reality Check vs Implementation Status
+
+While major phases are marked complete, a few items remain to reach a polished v1 and production deployment:
+
+- Tests listed as complete are not yet present in the repo (unit, visual regression, a11y, perf).
+- Pseudo-code highlighting is step-type based and does not map to specific lines.
+- Step history with compression and replay is not implemented.
+- Audio feedback is not implemented.
+- Memory usage metric relies on `performance.memory` (Chromium-only); needs a cross-browser fallback or graceful handling.
+- Minor bug in step-by-step Merge Sort (component step mode) selection logic versus worker implementation.
+- CI/build and deployment automation are not yet configured.
+
+## Remaining Tasks for v1
+
+### Must-have
+- [ ] Fix step-by-step Merge Sort in `SortingVisualizer.tsx` so ascending comparisons match worker logic.
+- [ ] Add CI build workflow (Node 18) to ensure `npm ci && npm run build` passes for `Sorter/App.UI`.
+- [ ] Prepare production build docs in `App.UI/README.md` (build/preview commands, troubleshooting).
+- [ ] Configure and deploy to Azure Static Web Apps (Free) with correct paths:
+  - App location: `Sorter/App.UI`
+  - Output location: `dist`
+- [ ] Ensure SPA fallback works on deep links/refresh (verify SWA default behavior; add config if needed).
+- [ ] Verify Web Worker works in production build (no cross-origin worker issues).
+- [ ] Basic a11y pass: keyboard navigation through controls, ARIA roles live regions sanity, no obvious contrast issues.
+- [ ] Remove or gracefully hide memory usage metric when unsupported.
+
+### MVP Quick Wins (Included)
+- [ ] Invariant overlays per algorithm
+  - Bubble/Selection: highlight last sorted suffix/prefix per pass.
+  - Insertion: emphasize sorted prefix; highlight insertion position.
+  - Merge: indicate active subarrays and merged range.
+  - Toggle in UI; theme-aware colors and a11y labels.
+
+- [ ] Stability demonstration mode
+  - Tag equal values with stable IDs (e.g., A1, A2) and optional tiny labels.
+  - Visually confirm stability (Insertion/Merge/Bubble stable) and non-stability (Selection).
+  - Toggle labels for performance; announce changes via ARIA.
+
+- [ ] Data pattern presets (input distributions)
+  - Presets: Reversed, Nearly Sorted (slider %), Few Unique (k distinct), Organ Pipe, Sawtooth, Gaussian/Normal, Duplicates-heavy.
+  - Add to `arrayUtils` and a small preset selector in `ControlPanel`.
+
+- [ ] Step history + timeline scrubber
+  - Next/Prev controls; slider to scrub steps.
+  - Use diff-based history or sparse snapshots to limit memory.
+  - Keep a conservative cap; show a clear reset.
+
+- [ ] Split-view Algorithm Race (lightweight)
+  - Side-by-side visualizers synchronized by seed and size.
+  - Minimal charts (steps, comparisons, swaps, time) using simple bars.
+  - Start/Pause/Reset in sync; ensure worker isolation per instance.
+
+### Nice-to-have (soon after v1)
+- [ ] Unit tests for algorithms (worker-level): correctness on sorted, reverse-sorted, nearly sorted arrays; comparisons/swaps sanity.
+- [ ] Map `SortingStep` to pseudo-code line indices; highlight only the active line(s) in `AlgorithmExplanation`.
+- [ ] Add a "Reset" control and ensure state machine transitions to `IDLE` cleanly.
+- [ ] Make execution time meaningful in step mode (accumulate actual step time, or label separately).
+- [ ] Automated a11y checks (e.g., axe) against key views.
+- [ ] Basic Playwright e2e: load app, randomize, run each algorithm for a short array, assert no console errors.
+
+### Later
+- [ ] Step history compression + replay controls.
+- [ ] Additional algorithms (e.g., Quick Sort, Heap Sort, Shell Sort).
+- [ ] Algorithm comparison mode (run two algorithms side-by-side with synced seeds).
+- [ ] Audio feedback with a mute toggle and reduced motion awareness.
+- [ ] Performance benchmarking page with charts (theme-aware).
+
+## Post‑MVP Potential Enhancements
+- PWA + offline (service worker, cache `dist`, installability).
+- Share/export/embeds (URL state encoding, JSON export, optional GIF/MP4 capture).
+- Exact pseudo-code line mapping + recursion/call-stack tree visualizations.
+- Custom algorithm playground (sandboxed worker, step API, time/step guards).
+- Advanced overlays for non-comparison sorts (bucket/count panels generalized and themable).
+- Lightweight benchmarking suite (multi-trials, distributions, aggregates, small charts).
+- Specialized diagrams: heap tree, sorting networks, BST for Tree Sort.
+- Haptics (mobile) and enhanced narration for accessibility.
+
+## Deployment Plan: Azure Static Web Apps (Free)
+
+### Overview
+Host the SPA on Azure Static Web Apps Free tier for lowest cost, GitHub-driven CI/CD, free SSL, and simple custom domain support.
+
+### Prerequisites
+- Azure subscription and resource group.
+- Source hosted on GitHub (main branch recommended for production).
+- Local verification:
+  - `cd Sorter/App.UI`
+  - `npm install`
+  - `npm run build`
+  - `npm run preview` and sanity-check workers, theme persistence, sorting.
+
+### Portal Setup (one-time)
+1. Create resource → Static Web App.
+2. Plan: Free. Region: closest to primary audience.
+3. Source: GitHub; select repo and branch (e.g., `main`).
+4. Build details:
+   - App location: `Sorter/App.UI`
+   - API location: (leave empty)
+   - Output location: `dist`
+5. Complete creation; the portal adds a GitHub Actions workflow with a publish token.
+
+### GitHub Actions expectations
+- Workflow should:
+  - Check out code.
+  - Use Node 18.
+  - Run `npm ci` and `npm run build` in `Sorter/App.UI`.
+  - Publish `dist` via `Azure/static-web-apps-deploy` action.
+
+### SPA routing and headers (optional but recommended)
+If you need explicit SPA fallback or security headers, add `staticwebapp.config.json` in `Sorter/App.UI`:
+
+```json
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/favicon.ico"]
+  },
+  "globalHeaders": {
+    "content-security-policy": "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'"
+  }
+}
+```
+
+### Custom domain (optional)
+1. In the SWA resource, add custom domain.
+2. Create CNAME from your domain to the SWA default hostname.
+3. Azure provisions free SSL cert automatically.
+
+### Rollback
+- Revert to a previous commit on the deployment branch and push; SWA redeploys automatically.
+
+### Monitoring
+- Use SWA Overview → Logs for deployment and runtime routing.
+- Optionally add an external uptime check to the public URL.
+
+## Acceptance Criteria (v1)
+- Sorting works in production for Bubble, Selection, Insertion, and Merge (both run and step modes).
+- No console errors; worker messages stream steps and complete correctly.
+- Theme switching persists and respects system theme.
+- SPA routes refresh correctly (index fallback) and direct links load.
+- Basic keyboard navigation works; focus is visible; ARIA live regions announce updates.
+- CI build passes on `main`; deploys automatically to SWA and is publicly accessible.
+
+## Task Checklist (condensed)
+- [ ] Fix Merge step-mode comparison logic in `SortingVisualizer.tsx`.
+- [ ] Hide/guard memory usage when unsupported; label as N/A.
+- [ ] Add GitHub Actions CI (build) and SWA deploy (portal-generated or verified).
+- [ ] Verify production worker functionality and SPA fallback.
+- [ ] Minimal a11y audit and README deployment notes.
+- [ ] Tag v1 once deployed and validated.

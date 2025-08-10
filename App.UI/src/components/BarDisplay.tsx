@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo, useCallback, useState } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { SortingStep } from '../types/sorting';
 import { calculateBarDimensions } from '../utils/arrayUtils';
 import './BarDisplay.css';
