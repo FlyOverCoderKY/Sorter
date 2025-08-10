@@ -1,0 +1,44 @@
+name: UI Build (Sorter/App.UI)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Sorter/App.UI/**'
+      - '.github/workflows/ui-build.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'Sorter/App.UI/**'
+      - '.github/workflows/ui-build.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Sorter/App.UI
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: Sorter/App.UI/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-ui-dist
+          path: Sorter/App.UI/dist
+
