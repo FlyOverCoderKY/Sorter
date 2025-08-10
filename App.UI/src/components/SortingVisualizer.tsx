@@ -9,158 +9,9 @@ import AlgorithmExplanation from './AlgorithmExplanation';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import { useTheme } from '../context/ThemeContext';
 import './SortingVisualizer.css';
+import { SortingAlgorithms } from '../algorithms/SortingAlgorithms';
 
-// Step-by-step sorting functions
-function* bubbleSortStep(arr: number[]): Generator<SortingStep> {
-  const n = arr.length;
-  
-  for (let i = 0; i < n - 1; i++) {
-    for (let j = 0; j < n - i - 1; j++) {
-      yield {
-        type: 'compare',
-        indices: [j, j + 1],
-        values: [arr[j], arr[j + 1]],
-        description: `Comparing elements at positions ${j} and ${j + 1}`,
-        timestamp: Date.now()
-      };
-      
-      if (arr[j] > arr[j + 1]) {
-        yield {
-          type: 'swap',
-          indices: [j, j + 1],
-          values: [arr[j], arr[j + 1]],
-          description: `Swapping elements at positions ${j} and ${j + 1}`,
-          timestamp: Date.now()
-        };
-        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-      }
-    }
-  }
-}
-
-function* selectionSortStep(arr: number[]): Generator<SortingStep> {
-  const n = arr.length;
-  
-  for (let i = 0; i < n - 1; i++) {
-    let minIndex = i;
-    
-    for (let j = i + 1; j < n; j++) {
-      yield {
-        type: 'compare',
-        indices: [minIndex, j],
-        values: [arr[minIndex], arr[j]],
-        description: `Comparing element at position ${minIndex} with element at position ${j}`,
-        timestamp: Date.now()
-      };
-      
-      if (arr[minIndex] > arr[j]) {
-        minIndex = j;
-      }
-    }
-    
-    if (minIndex !== i) {
-      yield {
-        type: 'swap',
-        indices: [i, minIndex],
-        values: [arr[i], arr[minIndex]],
-        description: `Swapping minimum element from position ${minIndex} to position ${i}`,
-        timestamp: Date.now()
-      };
-      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
-    }
-  }
-}
-
-function* insertionSortStep(arr: number[]): Generator<SortingStep> {
-  const n = arr.length;
-  
-  for (let i = 1; i < n; i++) {
-    const key = arr[i];
-    let j = i - 1;
-    
-    yield {
-      type: 'select',
-      indices: [i],
-      values: [key],
-      description: `Selecting element at position ${i} (value: ${key})`,
-      timestamp: Date.now()
-    };
-    
-    while (j >= 0 && arr[j] > key) {
-      yield {
-        type: 'compare',
-        indices: [j, j + 1],
-        values: [arr[j], key],
-        description: `Comparing element at position ${j} with selected key`,
-        timestamp: Date.now()
-      };
-      
-      arr[j + 1] = arr[j];
-      j--;
-    }
-    
-    arr[j + 1] = key;
-    yield {
-      type: 'insert',
-      indices: [j + 1],
-      values: [key],
-      description: `Inserting key at position ${j + 1}`,
-      timestamp: Date.now()
-    };
-  }
-}
-
-function* mergeSortStep(arr: number[]): Generator<SortingStep> {
-  yield* mergeSortHelper(arr, 0, arr.length - 1);
-}
-
-function* mergeSortHelper(arr: number[], left: number, right: number): Generator<SortingStep> {
-  if (left < right) {
-    const mid = Math.floor((left + right) / 2);
-    
-    yield* mergeSortHelper(arr, left, mid);
-    yield* mergeSortHelper(arr, mid + 1, right);
-    yield* merge(arr, left, mid, right);
-  }
-}
-
-function* merge(arr: number[], left: number, mid: number, right: number): Generator<SortingStep> {
-  const leftArray = arr.slice(left, mid + 1);
-  const rightArray = arr.slice(mid + 1, right + 1);
-  
-  let i = 0, j = 0, k = left;
-  
-  while (i < leftArray.length && j < rightArray.length) {
-    yield {
-      type: 'compare',
-      indices: [left + i, mid + 1 + j],
-      values: [leftArray[i], rightArray[j]],
-      description: `Comparing elements from left and right subarrays`,
-      timestamp: Date.now()
-    };
-    
-    if (rightArray[j] > leftArray[i]) {
-      arr[k] = leftArray[i];
-      i++;
-    } else {
-      arr[k] = rightArray[j];
-      j++;
-    }
-    k++;
-  }
-  
-  while (i < leftArray.length) {
-    arr[k] = leftArray[i];
-    i++;
-    k++;
-  }
-  
-  while (j < rightArray.length) {
-    arr[k] = rightArray[j];
-    j++;
-    k++;
-  }
-}
+// Use shared, tested step generators to keep step-mode aligned with the worker
 
 const SortingVisualizer: React.FC = () => {
   // Theme management
@@ -189,6 +40,7 @@ const SortingVisualizer: React.FC = () => {
   const currentRequestId = useRef<string>('');
   const stepGeneratorRef = useRef<Generator<SortingStep> | null>(null);
   const sortedArrayRef = useRef<number[]>([]);
+  const sortingAlgorithmsRef = useRef<SortingAlgorithms>(new SortingAlgorithms());
 
   // Initialize array on component mount
   useEffect(() => {
@@ -214,9 +66,13 @@ const SortingVisualizer: React.FC = () => {
   // Initialize Web Worker
   useEffect(() => {
     // Initialize global completion flag on document element for deterministic e2e signaling
-    try {
-      document.documentElement.setAttribute('data-sort-complete', 'false');
-    } catch {}
+    if (typeof document !== 'undefined' && document.documentElement) {
+      try {
+        document.documentElement.setAttribute('data-sort-complete', 'false');
+      } catch {
+        // ignore
+      }
+    }
 
     if (typeof Worker !== 'undefined') {
       workerRef.current = new Worker(
@@ -280,9 +136,13 @@ const SortingVisualizer: React.FC = () => {
 
   // Reflect completion flag globally for tests
   useEffect(() => {
-    try {
-      document.documentElement.setAttribute('data-sort-complete', sortCompleted ? 'true' : 'false');
-    } catch {}
+    if (typeof document !== 'undefined' && document.documentElement) {
+      try {
+        document.documentElement.setAttribute('data-sort-complete', sortCompleted ? 'true' : 'false');
+      } catch {
+        // ignore
+      }
+    }
   }, [sortCompleted]);
 
   // Generate new random array
@@ -332,11 +192,32 @@ const SortingVisualizer: React.FC = () => {
     if (!stateMachine.current.canStartSort()) return;
     
     // Create a step generator for the current algorithm
-    const algorithms = new Map([
-      ['bubble', bubbleSortStep],
-      ['selection', selectionSortStep],
-      ['insertion', insertionSortStep],
-      ['merge', mergeSortStep]
+    const algo = sortingAlgorithmsRef.current;
+    const algorithms = new Map<AlgorithmType, (arr: number[]) => Generator<SortingStep>>([
+      ['bubble', (arr) => algo.bubbleSort(arr)],
+      ['selection', (arr) => algo.selectionSort(arr)],
+      ['insertion', (arr) => algo.insertionSort(arr)],
+      ['merge', (arr) => algo.mergeSort(arr)],
+      ['quick', (arr) => algo.quickSort(arr)],
+      ['heap', (arr) => algo.heapSort(arr)],
+      ['shell', (arr) => algo.shellSort(arr)],
+      ['comb', (arr) => algo.combSort(arr)],
+      ['cocktail', (arr) => algo.cocktailSort(arr)],
+      ['counting', (arr) => algo.countingSort(arr)],
+      ['naturalMerge', (arr) => algo.naturalMergeSort(arr)],
+      ['intro', (arr) => algo.introSort(arr)],
+      ['timsort', (arr) => algo.timSort(arr)],
+      ['bitonic', (arr) => algo.bitonicSort(arr)],
+      ['tree', (arr) => algo.treeSort(arr)],
+      ['bogo', (arr) => algo.bogoSort(arr)],
+      ['bozo', (arr) => algo.bozoSort(arr)],
+      ['stooge', (arr) => algo.stoogeSort(arr)],
+      ['gnome', (arr) => algo.gnomeSort(arr)],
+      ['oddEven', (arr) => algo.oddEvenSort(arr)],
+      ['stableSelection', (arr) => algo.stableSelectionSort(arr)],
+      ['radix', (arr) => algo.radixSort(arr)],
+      ['bucket', (arr) => algo.bucketSort(arr)],
+      ['pigeonhole', (arr) => algo.pigeonholeSort(arr)],
     ]);
     
     const stepFunction = algorithms.get(currentAlgorithm);

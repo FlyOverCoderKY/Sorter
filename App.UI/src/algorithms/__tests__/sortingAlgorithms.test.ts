@@ -8,13 +8,63 @@ function isNonDecreasing(arr: number[]): boolean {
   return true;
 }
 
-function runAllSteps(steps: Generator<unknown>): void {
-  for (const _ of steps) {
-    // exhaust generator
-  }
+function runAllSteps<T>(steps: Generator<T>): void {
+  // exhaust generator without assigning the yielded value
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const __ of steps) { /* no-op */ }
 }
 
 describe('SortingAlgorithms', () => {
+  it('handles already sorted, reverse sorted, and duplicates-heavy arrays', () => {
+    const algo = new SortingAlgorithms();
+    const sorted = Array.from({ length: 50 }, (_, i) => i);
+    const reverse = Array.from({ length: 50 }, (_, i) => 50 - i);
+    const duplicates = Array.from({ length: 50 }, () => [1, 2, 3, 3, 2, 1][Math.floor(Math.random() * 6)]);
+
+    const a1 = [...sorted];
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const __ of algo.bubbleSort(a1)) {/* consume */}
+    expect(isNonDecreasing(a1)).toBe(true);
+
+    const a2 = [...reverse];
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const __ of algo.selectionSort(a2)) {/* consume */}
+    expect(isNonDecreasing(a2)).toBe(true);
+
+    const a3 = [...duplicates];
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const __ of algo.insertionSort(a3)) {/* consume */}
+    expect(isNonDecreasing(a3)).toBe(true);
+  });
+
+  it('handles very small arrays and empty array', () => {
+    const algo = new SortingAlgorithms();
+    const cases = [[], [5], [2, 1]] as number[][];
+    for (const arr of cases) {
+      const c1 = [...arr]; // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      for (const __ of algo.bubbleSort(c1)) {/* */} expect(isNonDecreasing(c1)).toBe(true);
+      const c2 = [...arr]; // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      for (const __ of algo.selectionSort(c2)) {/* */} expect(isNonDecreasing(c2)).toBe(true);
+      const c3 = [...arr]; // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      for (const __ of algo.insertionSort(c3)) {/* */} expect(isNonDecreasing(c3)).toBe(true);
+      const c4 = [...arr]; // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      for (const __ of algo.mergeSort(c4)) {/* */} expect(isNonDecreasing(c4)).toBe(true);
+    }
+  });
+
+  it('bubble sort makes zero swaps on already sorted input (basic metrics sanity)', () => {
+    const algo = new SortingAlgorithms();
+    const arr = Array.from({ length: 20 }, (_, i) => i);
+    const copy = [...arr];
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const __ of algo.bubbleSort(copy)) {/* consume */}
+    // On sorted input, bubble sort performs no swaps
+    const { swaps, comparisons, steps } = algo.getMetrics();
+    expect(swaps).toBe(0);
+    expect(comparisons).toBeGreaterThan(0);
+    expect(steps).toBeGreaterThan(0);
+  });
+
   it('bubbleSort sorts correctly for random input', () => {
     const algo = new SortingAlgorithms();
     const arr = Array.from({ length: 50 }, () => Math.floor(Math.random() * 1000));

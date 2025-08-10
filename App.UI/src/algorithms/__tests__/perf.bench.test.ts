@@ -2,9 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { SortingAlgorithms } from '../../algorithms/SortingAlgorithms';
 
 function consume<T>(gen: Generator<T>): void {
-  for (const _ of gen) {
-    // no-op
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const __ of gen) { /* no-op */ }
 }
 
 function randomArray(n: number): number[] {

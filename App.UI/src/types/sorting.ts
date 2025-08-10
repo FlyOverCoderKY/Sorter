@@ -1,5 +1,29 @@
 // Sorting algorithm types
-export type AlgorithmType = 'bubble' | 'selection' | 'insertion' | 'merge';
+export type AlgorithmType =
+  | 'bubble'
+  | 'selection'
+  | 'insertion'
+  | 'merge'
+  | 'quick'
+  | 'heap'
+  | 'shell'
+  | 'comb'
+  | 'cocktail'
+  | 'counting'
+  | 'naturalMerge'
+  | 'intro'
+  | 'timsort'
+  | 'bitonic'
+  | 'tree'
+  | 'bogo'
+  | 'bozo'
+  | 'stooge'
+  | 'gnome'
+  | 'oddEven'
+  | 'stableSelection'
+  | 'radix'
+  | 'bucket'
+  | 'pigeonhole';
 
 // State machine states
 export type AppState = 'IDLE' | 'GENERATING' | 'SORTING' | 'PAUSED' | 'COMPLETED';
@@ -15,7 +39,20 @@ export interface PerformanceMetrics {
 
 // Sorting step for visualization
 export interface SortingStep {
-  type: 'compare' | 'swap' | 'merge' | 'select' | 'insert';
+  type:
+    | 'compare'
+    | 'swap'
+    | 'merge'
+    | 'select'
+    | 'insert'
+    | 'count'
+    | 'collect'
+    | 'write'
+    | 'bucket'
+    | 'partition'
+    | 'heapify'
+    | 'gap'
+    | 'note';
   indices: number[];
   values: number[];
   description: string;

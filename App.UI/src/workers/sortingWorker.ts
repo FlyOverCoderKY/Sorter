@@ -131,6 +131,46 @@ function getSortingGenerator(algorithm: AlgorithmType, array: number[]) {
       return sortingAlgorithms.insertionSort(array);
     case 'merge':
       return sortingAlgorithms.mergeSort(array);
+    case 'counting':
+      return sortingAlgorithms.countingSort(array);
+    case 'naturalMerge':
+      return sortingAlgorithms.naturalMergeSort(array);
+    case 'intro':
+      return sortingAlgorithms.introSort(array);
+    case 'timsort':
+      return sortingAlgorithms.timSort(array);
+    case 'bitonic':
+      return sortingAlgorithms.bitonicSort(array);
+    case 'tree':
+      return sortingAlgorithms.treeSort(array);
+    case 'bogo':
+      return sortingAlgorithms.bogoSort(array);
+    case 'bozo':
+      return sortingAlgorithms.bozoSort(array);
+    case 'stooge':
+      return sortingAlgorithms.stoogeSort(array);
+    case 'gnome':
+      return sortingAlgorithms.gnomeSort(array);
+    case 'oddEven':
+      return sortingAlgorithms.oddEvenSort(array);
+    case 'stableSelection':
+      return sortingAlgorithms.stableSelectionSort(array);
+    case 'radix':
+      return sortingAlgorithms.radixSort(array);
+    case 'bucket':
+      return sortingAlgorithms.bucketSort(array);
+    case 'pigeonhole':
+      return sortingAlgorithms.pigeonholeSort(array);
+    case 'quick':
+      return sortingAlgorithms.quickSort(array);
+    case 'heap':
+      return sortingAlgorithms.heapSort(array);
+    case 'shell':
+      return sortingAlgorithms.shellSort(array);
+    case 'comb':
+      return sortingAlgorithms.combSort(array);
+    case 'cocktail':
+      return sortingAlgorithms.cocktailSort(array);
     default:
       throw new Error(`Unknown algorithm: ${algorithm}`);
   }

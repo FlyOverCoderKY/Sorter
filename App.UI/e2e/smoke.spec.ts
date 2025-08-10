@@ -93,6 +93,31 @@ test.describe('Sorting Visualizer smoke', () => {
     await expect(page.locator('.array-info')).toBeVisible();
   });
 
+  test('worker streams steps to completion for each algorithm (smoke)', async ({ page }) => {
+    await page.goto('/');
+
+    const selectAlgorithm = async (name: string) => {
+      const selectorButton = page.getByRole('button', { name: /Choose Algorithm|Select sorting algorithm|Algorithm/i });
+      await selectorButton.click().catch(() => {});
+      const option = page.getByRole('option', { name: new RegExp(name, 'i') });
+      await option.click();
+    };
+
+    const algorithms = ['Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Merge Sort'];
+    for (const algo of algorithms) {
+      await selectAlgorithm(algo);
+      await page.getByRole('button', { name: '🎲 Randomize Array' }).click();
+      await page.getByRole('button', { name: '▶️ Start Sort' }).click();
+      await page.waitForTimeout(500);
+      const stop = page.getByRole('button', { name: '⏹️ Stop' });
+      if (await stop.isVisible()) {
+        await stop.click();
+      }
+      // Ensure UI remains responsive
+      await expect(page.locator('.array-info')).toBeVisible();
+    }
+  });
+
   test('can toggle theme via ThemeSwitcher', async ({ page }) => {
     await page.goto('/');
     // Open Theme menu

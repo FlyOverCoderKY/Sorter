@@ -47,6 +47,12 @@
   --bar-sorted-color: var(--color-success);
   --bar-active-color: var(--color-info);
   --bar-border-color: var(--color-foreground);
+  /* Additional step types for counting/bucketed sorts */
+  --bar-count-color: var(--color-warning);
+  --bar-collect-color: var(--color-accent);
+  --bar-write-color: var(--color-success);
+  /* Advanced notes */
+  --bar-note-color: var(--color-foreground-subtle);
 }
 
 /* Step indicator */

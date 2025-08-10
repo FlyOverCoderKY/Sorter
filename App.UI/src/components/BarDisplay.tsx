@@ -42,6 +42,14 @@ const Bar = React.memo<{
           return 'var(--bar-insert-color)';
         case 'merge':
           return 'var(--bar-merge-color)';
+        case 'count':
+          return 'var(--bar-count-color)';
+        case 'collect':
+          return 'var(--bar-collect-color)';
+        case 'write':
+          return 'var(--bar-write-color)';
+        case 'note':
+          return 'var(--bar-note-color)';
         default:
           return 'var(--bar-active-color)';
       }
