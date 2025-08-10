@@ -181,6 +181,7 @@ const SortingVisualizer: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<SortingStep | null>(null);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [sortCompleted, setSortCompleted] = useState<boolean>(false);
 
   // Refs and state machine
   const stateMachine = useRef(new StateMachine());
@@ -212,8 +213,16 @@ const SortingVisualizer: React.FC = () => {
 
   // Initialize Web Worker
   useEffect(() => {
+    // Initialize global completion flag on document element for deterministic e2e signaling
+    try {
+      document.documentElement.setAttribute('data-sort-complete', 'false');
+    } catch {}
+
     if (typeof Worker !== 'undefined') {
-      workerRef.current = new Worker(new URL('../workers/sortingWorker.ts', import.meta.url));
+      workerRef.current = new Worker(
+        new URL('../workers/sortingWorker.ts', import.meta.url),
+        { type: 'module' }
+      );
       
       workerRef.current.onmessage = (event) => {
         const { type, step, metrics: workerMetrics, sortedArray, currentArray, error } = event.data;
@@ -243,6 +252,7 @@ const SortingVisualizer: React.FC = () => {
             }
             setIsRunning(false);
             setIsPaused(false);
+            setSortCompleted(true);
             stateMachine.current.transition('SORT_COMPLETE');
             // Reset step generator
             stepGeneratorRef.current = null;
@@ -268,6 +278,13 @@ const SortingVisualizer: React.FC = () => {
     }
   }, []);
 
+  // Reflect completion flag globally for tests
+  useEffect(() => {
+    try {
+      document.documentElement.setAttribute('data-sort-complete', sortCompleted ? 'true' : 'false');
+    } catch {}
+  }, [sortCompleted]);
+
   // Generate new random array
   const handleGenerateArray = useCallback(() => {
     if (!stateMachine.current.canGenerate()) return;
@@ -276,6 +293,7 @@ const SortingVisualizer: React.FC = () => {
     const newArray = generateRandomArray(arraySize);
     setArray(newArray);
     setCurrentStep(null);
+    setSortCompleted(false);
     setMetrics({
       steps: 0,
       comparisons: 0,
@@ -294,6 +312,7 @@ const SortingVisualizer: React.FC = () => {
     
     setIsRunning(true);
     setIsPaused(false);
+    setSortCompleted(false);
     stateMachine.current.transition('START_SORT');
     
     const requestId = Date.now().toString();
@@ -397,6 +416,7 @@ const SortingVisualizer: React.FC = () => {
     
     setIsRunning(false);
     setIsPaused(false);
+    setSortCompleted(false);
     stateMachine.current.transition('CANCEL_SORT');
     
     // Reset step generator
@@ -425,7 +445,20 @@ const SortingVisualizer: React.FC = () => {
       executionTime: 0,
       memoryUsage: 0
     });
-  }, [isRunning]);
+
+    // If a previous run has finished, randomize the array on algorithm change
+    if (stateMachine.current.isCompleted()) {
+      if (stateMachine.current.canGenerate()) {
+        stateMachine.current.transition('GENERATE_ARRAY');
+      }
+      const newArray = generateRandomArray(arraySize);
+      setArray(newArray);
+      setSortCompleted(false);
+      // Ensure generator is reset after new data
+      stepGeneratorRef.current = null;
+      stateMachine.current.transition('ARRAY_GENERATED');
+    }
+  }, [isRunning, arraySize]);
 
   // Handle speed change
   const handleSpeedChange = useCallback((newSpeed: number) => {
@@ -436,9 +469,14 @@ const SortingVisualizer: React.FC = () => {
   const handleArraySizeChange = useCallback((newSize: number) => {
     if (isRunning) return;
     setArraySize(newSize);
-    
-    // Only generate new array if size actually changed and we're not in completed state
-    if (array.length !== newSize && !stateMachine.current.isCompleted()) {
+
+    // Only generate new array if size actually changed
+    if (array.length !== newSize) {
+      // Transition to generating when allowed (IDLE or COMPLETED)
+      if (stateMachine.current.canGenerate()) {
+        stateMachine.current.transition('GENERATE_ARRAY');
+      }
+
       const newArray = generateRandomArray(newSize);
       setArray(newArray);
       setCurrentStep(null);
@@ -451,8 +489,18 @@ const SortingVisualizer: React.FC = () => {
       });
       // Reset step generator
       stepGeneratorRef.current = null;
+
+      // Clear completed state if we were previously completed
+      if (stateMachine.current.isCompleted() || sortCompleted) {
+        setSortCompleted(false);
+      }
+
+      // Finalize generation transition back to idle
+      if (stateMachine.current.getCurrentState() === 'GENERATING') {
+        stateMachine.current.transition('ARRAY_GENERATED');
+      }
     }
-  }, [isRunning, array.length]);
+  }, [isRunning, array.length, sortCompleted]);
 
   return (
     <div className="sorting-visualizer" role="main" aria-label="Sorting Algorithm Visualizer">
@@ -472,6 +520,8 @@ const SortingVisualizer: React.FC = () => {
       </header>
       
       <div className="visualizer-content">
+        {/* Deterministic completion marker for tests */}
+        <div id="sort-status" data-complete={sortCompleted ? 'true' : 'false'} style={{ display: 'none' }} />
         <div className="control-section">
           <ControlPanel
             currentAlgorithm={currentAlgorithm}

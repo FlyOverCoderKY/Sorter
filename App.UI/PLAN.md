@@ -61,6 +61,101 @@ This application will provide an interactive visualization of various sorting al
 - **High Contrast Support**: Enhanced visibility options for accessibility
 - **Reduced Motion Support**: Respects user motion preferences
 
+## Technical Considerations
+
+### For All New Components
+1. **Use Theme Variables**: Never hardcode colors - use CSS variables
+2. **Theme Context Integration**: Connect to ThemeContext for state
+3. **Smooth Transitions**: Implement 300ms ease transitions
+4. **Accessibility First**: Ensure proper contrast in both themes
+5. **Mobile Responsive**: Test themes on different screen sizes
+6. **Performance**: Avoid layout shifts during theme changes
+
+### CSS Implementation Pattern
+```css
+.new-component {
+  background: var(--color-panel-background);
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border);
+  transition: var(--theme-transition-properties);
+}
+
+.new-component:hover {
+  background: var(--color-hover);
+  border-color: var(--color-border-strong);
+}
+```
+
+### React Component Pattern
+```tsx
+import { useTheme } from '../context/ThemeContext';
+
+const NewComponent = () => {
+  const { theme } = useTheme();
+  
+  return (
+    <div className="new-component">
+      {/* Component content */}
+    </div>
+  );
+};
+```
+
+### Theme System Requirements ⭐ **MANDATORY FOR ALL NEW FEATURES**
+- **CSS Variables**: Use established theme variable system for all colors
+- **Theme Context**: Integrate with ThemeContext for state management
+- **Smooth Transitions**: Implement 300ms ease transitions for theme changes
+- **Accessibility**: Ensure WCAG AA compliance in both themes
+- **Performance**: Optimize theme switching without layout shifts
+- **Mobile Support**: Ensure themes work across all device sizes
+- **Fallbacks**: Provide graceful degradation for unsupported browsers
+
+### Core Theme Variables Available
+```css
+/* Background Colors */
+--color-page-background, --color-panel-background, --color-overlay-background
+
+/* Text Colors */
+--color-foreground, --color-foreground-muted, --color-foreground-subtle
+
+/* Border Colors */
+--color-border, --color-border-strong, --color-border-subtle
+
+/* Status Colors */
+--color-success, --color-warning, --color-error, --color-info
+
+/* Interactive Colors */
+--color-hover, --color-hover-strong, --color-active, --color-accent
+
+/* Code Colors */
+--color-code-background, --color-code-foreground, --color-code-border
+```
+
+### Other Technical Requirements
+- Use Web Workers for background processing
+- Implement memory-efficient step tracking
+- Use TypeScript for type safety
+- Maintain responsive design
+- Comprehensive accessibility support
+- State machine for robust state management
+- Memory usage monitoring and optimization
+
+## Testing Strategy
+- Unit tests for sorting algorithms (Vitest + jsdom)
+- Visual regression tests for animations (snapshots for `BarDisplay`)
+- Accessibility compliance testing (axe-core for components; expand coverage)
+- Performance benchmarking
+- Memory leak detection
+- Cross-browser compatibility
+- State machine transition testing
+- **Theme System Testing**:
+  - Light/dark theme switching
+  - System theme detection
+  - Theme persistence
+  - Accessibility compliance in both themes
+  - Mobile theme support
+  - Performance during theme changes
+
 ## Technical Implementation
 
 ### Components Structure
@@ -145,6 +240,10 @@ Each sorting algorithm will be implemented as a separate module with:
 ## Work Plan by Phases
 
 ### Completed Phases
+1. ✅ CI/CD & Deployment to Azure Static Web Apps
+   - GitHub Actions workflow `UI Build (App.UI)` builds with Node 18, uploads `dist` as artifact, and deploys to Azure SWA using repository secret.
+   - SPA fallback configured via `staticwebapp.config.json` in `App.UI/public` (copied to `dist`).
+   - Verified production deployment at the SWA URL; deep links route to `index.html`.
 
 ## Development Phases
 
@@ -179,18 +278,7 @@ Each sorting algorithm will be implemented as a separate module with:
 5. ✅ Add pseudo-code display
 6. ✅ **Theme-aware color coding and animations**
 
-### Pre‑MVP Phases
-
-#### Phase 5: Testing & Optimization (Required for MVP)
-- Implement unit tests for algorithms (worker-level)
-- Add visual regression tests (key states)
-- Add accessibility testing (contrast, focus, screen reader)
-- Optimize memory usage and check for leaks
-- Cross-browser smoke tests
-- Add basic performance benchmarks
-- Theme system testing across light/dark/system and reduced motion
-
-### Phase 6: Theme System Implementation ✅ **COMPLETE**
+### Phase 5: Theme System Implementation ✅ **COMPLETE**
 1. ✅ **Foundation CSS Variables**: Comprehensive color system
 2. ✅ **Global Theme Support**: Base styles with Headless UI integration
 3. ✅ **Smooth Transitions**: 300ms ease transitions
@@ -199,84 +287,41 @@ Each sorting algorithm will be implemented as a separate module with:
 6. ✅ **Component Integration**: All components themed
 7. ✅ **Polish & Testing**: Accessibility, performance, mobile support
 
-## Technical Considerations
+### Pre‑MVP Phases
 
-### Theme System Requirements ⭐ **MANDATORY FOR ALL NEW FEATURES**
-- **CSS Variables**: Use established theme variable system for all colors
-- **Theme Context**: Integrate with ThemeContext for state management
-- **Smooth Transitions**: Implement 300ms ease transitions for theme changes
-- **Accessibility**: Ensure WCAG AA compliance in both themes
-- **Performance**: Optimize theme switching without layout shifts
-- **Mobile Support**: Ensure themes work across all device sizes
-- **Fallbacks**: Provide graceful degradation for unsupported browsers
-
-### Core Theme Variables Available
-```css
-/* Background Colors */
---color-page-background, --color-panel-background, --color-overlay-background
-
-/* Text Colors */
---color-foreground, --color-foreground-muted, --color-foreground-subtle
-
-/* Border Colors */
---color-border, --color-border-strong, --color-border-subtle
-
-/* Status Colors */
---color-success, --color-warning, --color-error, --color-info
-
-/* Interactive Colors */
---color-hover, --color-hover-strong, --color-active, --color-accent
-
-/* Code Colors */
---color-code-background, --color-code-foreground, --color-code-border
-```
-
-### Other Technical Requirements
-- Use Web Workers for background processing
-- Implement memory-efficient step tracking
-- Use TypeScript for type safety
-- Maintain responsive design
-- Comprehensive accessibility support
-- State machine for robust state management
-- Memory usage monitoring and optimization
-
-## Testing Strategy
-- Unit tests for sorting algorithms
-- Visual regression tests for animations
-- Accessibility compliance testing
-- Performance benchmarking
-- Memory leak detection
-- Cross-browser compatibility
-- State machine transition testing
-- **Theme System Testing**:
-  - Light/dark theme switching
-  - System theme detection
-  - Theme persistence
-  - Accessibility compliance in both themes
-  - Mobile theme support
-  - Performance during theme changes
-
-## Release Phases
-
-### Pre‑MVP Bug Fixes & Hardening
+#### Phase 6: Testing & Optimization (Required for MVP)
+- ✅ Implement unit tests for algorithms (core step generators)
+- ✅ Add visual regression tests (key states) — snapshot tests for `BarDisplay`
+- ✅ Add accessibility testing (contrast, focus, screen reader) — initial axe-core test for `ControlPanel`
+- 🔄 Optimize memory usage and check for leaks — Chromium heap sampling via Playwright CDP with deterministic stop; further profiling/leak checks pending
+- ✅ Cross-browser smoke tests — Playwright smoke across Chromium/Firefox/WebKit
+- ✅ Add basic performance benchmarks — Vitest micro-bench on small arrays
+- ✅ Theme system testing across light/dark/system and reduced motion — e2e verifies System mapping and reduced motion behavior
+- Expand algorithm unit tests to cover: already sorted, reverse sorted, duplicates-heavy, very small/very large arrays; add basic assertions on comparisons/swaps ranges.
+- Add visual regression tests for `BarDisplay` in key states (idle, compare, swap, insert, merge) using Testing Library snapshots; optionally add Playwright screenshot diffs.
+- Integrate automated a11y checks (axe) for `ControlPanel` and main view; verify roles, labels, focus order, and contrast.
+- Add worker/protocol smoke tests via Playwright: run each algorithm briefly and assert no console errors and that steps stream to completion.
+- Implement a micro-benchmark harness (Vitest task) to log execution time across sizes (n = 10, 100, 1k) for each algorithm.
+- Memory guard and leak check: loop sorts in headless browser and monitor heap; ensure UI hides memory metric when unsupported and labels as N/A.
+- Theme system tests: simulate light/dark/system and `prefers-reduced-motion` to verify class/attribute changes and transition settings.
 - Fix step-by-step Merge Sort comparison logic in `SortingVisualizer.tsx` (align with worker).
 - Guard memory usage metric when unsupported; display N/A.
 - Verify Web Worker behavior in production (no cross-origin issues).
 - Ensure SPA fallback works on deep links/refresh.
 
-### Pre‑MVP MVP Quick Wins
+### Phase 7: Pre‑MVP MVP Quick Wins
 - Invariant overlays per algorithm (sorted regions, active ranges).
 - Stability demonstration mode (duplicate labels and order preservation).
 - Data pattern presets (reversed, nearly sorted %, few unique k, organ pipe, sawtooth, Gaussian, duplicates-heavy).
 - Step history with next/prev and timeline scrubber (bounded memory).
 - Split-view Algorithm Race with minimal charts; synchronized controls.
 
-### Pre‑MVP Deployment Setup
-- Configure CI build workflow (Node 18) for `Sorter/App.UI`.
-- Connect repository to Azure Static Web Apps (Free) and verify portal workflow.
-- Confirm output path `dist` and app path `Sorter/App.UI`.
+### Phase 8: Pre‑MVP Deployment Setup
+- ✅ Configure CI build workflow (Node 18) for `Sorter/App.UI`.
+- ✅ Connect repository to Azure Static Web Apps (Free) and verify portal workflow.
+- ✅ Confirm output path `dist` and app path `Sorter/App.UI`.
 
-### MVP Release (V1)
+### Phase 9: MVP Release (V1)
 - Deploy to Azure Static Web Apps following the Deployment Plan.
 - Acceptance Criteria:
   - Sorting works in production for Bubble, Selection, Insertion, Merge (run and step modes).
@@ -288,7 +333,7 @@ Each sorting algorithm will be implemented as a separate module with:
 
 ## Post‑Release Phases
 
-### Phase 7: Additional Sorting Algorithms (Planned)
+### Phase 10: Additional Sorting Algorithms (Planned)
 
 ### Goals
 - Broaden educational coverage by adding a diverse set of sorting algorithms.
@@ -438,51 +483,13 @@ Each sorting algorithm will be implemented as a separate module with:
 - Data constraints:
   - For counting/radix/bucket sorts, ensure value ranges remain tractable; otherwise show guidance or auto-sample.
 
-### Acceptance Criteria (Phase 7)
+### Acceptance Criteria (Phase 10)
 - At least 4 Group A algorithms implemented with step generators and worker integration.
 - One Group B algorithm (Counting or Radix) implemented with an overlay panel and extended step types.
 - Colors and a11y are preserved for all new step types; theme transitions remain smooth.
 - CI build stays green; production deploy via Azure Static Web Apps continues to succeed.
 
 ## Theme Implementation Guidelines ⭐ **DEVELOPMENT STANDARDS**
-
-### For All New Components
-1. **Use Theme Variables**: Never hardcode colors - use CSS variables
-2. **Theme Context Integration**: Connect to ThemeContext for state
-3. **Smooth Transitions**: Implement 300ms ease transitions
-4. **Accessibility First**: Ensure proper contrast in both themes
-5. **Mobile Responsive**: Test themes on different screen sizes
-6. **Performance**: Avoid layout shifts during theme changes
-
-### CSS Implementation Pattern
-```css
-.new-component {
-  background: var(--color-panel-background);
-  color: var(--color-foreground);
-  border: 1px solid var(--color-border);
-  transition: var(--theme-transition-properties);
-}
-
-.new-component:hover {
-  background: var(--color-hover);
-  border-color: var(--color-border-strong);
-}
-```
-
-### React Component Pattern
-```tsx
-import { useTheme } from '../context/ThemeContext';
-
-const NewComponent = () => {
-  const { theme } = useTheme();
-  
-  return (
-    <div className="new-component">
-      {/* Component content */}
-    </div>
-  );
-};
-```
 
 ### Quality Assurance Checklist
 - [ ] Component responds to theme changes
@@ -503,24 +510,24 @@ const NewComponent = () => {
 
 While major phases are marked complete, a few items remain to reach a polished v1 and production deployment:
 
-- Tests listed as complete are not yet present in the repo (unit, visual regression, a11y, perf).
+- Initial tests are present (algorithm unit tests, ThemeContext smoke test). Visual regression, a11y, and perf tests are still pending.
 - Pseudo-code highlighting is step-type based and does not map to specific lines.
 - Step history with compression and replay is not implemented.
 - Audio feedback is not implemented.
 - Memory usage metric relies on `performance.memory` (Chromium-only); needs a cross-browser fallback or graceful handling.
 - Minor bug in step-by-step Merge Sort (component step mode) selection logic versus worker implementation.
-- CI/build and deployment automation are not yet configured.
+- CI/build and deployment automation are configured and green (build + deploy to Azure SWA).
 
 ## Remaining Tasks for v1
 
 ### Must-have
 - [ ] Fix step-by-step Merge Sort in `SortingVisualizer.tsx` so ascending comparisons match worker logic.
-- [ ] Add CI build workflow (Node 18) to ensure `npm ci && npm run build` passes for `Sorter/App.UI`.
+- [x] Add CI build workflow (Node 18) to ensure `npm ci && npm run build` passes for `App.UI` (artifact: `app-ui-dist`).
 - [ ] Prepare production build docs in `App.UI/README.md` (build/preview commands, troubleshooting).
-- [ ] Configure and deploy to Azure Static Web Apps (Free) with correct paths:
-  - App location: `Sorter/App.UI`
+- [x] Configure and deploy to Azure Static Web Apps (Free) with correct paths:
+  - App location: `App.UI`
   - Output location: `dist`
-- [ ] Ensure SPA fallback works on deep links/refresh (verify SWA default behavior; add config if needed).
+- [x] Ensure SPA fallback works on deep links/refresh (explicit `staticwebapp.config.json` under `App.UI/public`).
 - [ ] Verify Web Worker works in production build (no cross-origin worker issues).
 - [ ] Basic a11y pass: keyboard navigation through controls, ARIA roles live regions sanity, no obvious contrast issues.
 - [ ] Remove or gracefully hide memory usage metric when unsupported.
@@ -595,7 +602,7 @@ Host the SPA on Azure Static Web Apps Free tier for lowest cost, GitHub-driven C
 2. Plan: Free. Region: closest to primary audience.
 3. Source: GitHub; select repo and branch (e.g., `main`).
 4. Build details:
-   - App location: `Sorter/App.UI`
+   - App location: `App.UI`
    - API location: (leave empty)
    - Output location: `dist`
 5. Complete creation; the portal adds a GitHub Actions workflow with a publish token.
@@ -604,11 +611,12 @@ Host the SPA on Azure Static Web Apps Free tier for lowest cost, GitHub-driven C
 - Workflow should:
   - Check out code.
   - Use Node 18.
-  - Run `npm ci` and `npm run build` in `Sorter/App.UI`.
-  - Publish `dist` via `Azure/static-web-apps-deploy` action.
+  - Build in `App.UI` (`npm ci` then `npm run build`).
+  - Deploy `dist` via `Azure/static-web-apps-deploy`.
+  - Our workflow uploads `dist` as an artifact in a `build` job and the `deploy` job uploads from `App.UI/dist` with `skip_app_build: true`.
 
 ### SPA routing and headers (optional but recommended)
-If you need explicit SPA fallback or security headers, add `staticwebapp.config.json` in `Sorter/App.UI`:
+Explicit SPA fallback and headers are provided via `staticwebapp.config.json` in `App.UI/public` (copied to `dist`):
 
 ```json
 {

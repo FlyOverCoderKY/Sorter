@@ -1,0 +1,495 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BarDisplay snapshots > renders compare state 1`] = `
+<div>
+  <div
+    class="bar-display"
+  >
+    <div
+      class="bar-container"
+      style="max-width: 100%;"
+    >
+      <div
+        aria-label="Position 1, Value: 10"
+        class="bar"
+        data-index="0"
+        data-value="10"
+        role="img"
+        style="height: 25%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 1, Value: 10"
+      />
+      <div
+        aria-label="Position 2, Value: 20 - Comparing"
+        class="bar"
+        data-index="1"
+        data-value="20"
+        role="img"
+        style="height: 50%; width: 4px; margin-right: 2px; background-color: var(--bar-compare-color); border: 2px solid var(--bar-border-color); opacity: 1; transition: none;"
+        title="Position 2, Value: 20 - Comparing"
+      />
+      <div
+        aria-label="Position 3, Value: 30 - Comparing"
+        class="bar"
+        data-index="2"
+        data-value="30"
+        role="img"
+        style="height: 75%; width: 4px; margin-right: 2px; background-color: var(--bar-compare-color); border: 2px solid var(--bar-border-color); opacity: 1; transition: none;"
+        title="Position 3, Value: 30 - Comparing"
+      />
+      <div
+        aria-label="Position 4, Value: 40"
+        class="bar"
+        data-index="3"
+        data-value="40"
+        role="img"
+        style="height: 100%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 4, Value: 40"
+      />
+      <div
+        aria-label="Position 5, Value: 25"
+        class="bar"
+        data-index="4"
+        data-value="25"
+        role="img"
+        style="height: 62.5%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 5, Value: 25"
+      />
+      <div
+        aria-label="Position 6, Value: 15"
+        class="bar"
+        data-index="5"
+        data-value="15"
+        role="img"
+        style="height: 37.5%; width: 4px; margin-right: 0px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 6, Value: 15"
+      />
+    </div>
+    <div
+      aria-live="polite"
+      class="flex flex-col gap-1 step-indicator"
+      role="status"
+    >
+      <span
+        class="font-semibold text-sm"
+      >
+        COMPARE
+      </span>
+      <span
+        class="text-sm"
+      >
+        Comparing
+      </span>
+    </div>
+    <div
+      class="flex gap-4 array-info"
+    >
+      <span
+        class="text-sm"
+      >
+        Array Size: 
+        6
+      </span>
+      <span
+        class="text-sm"
+      >
+        Range: 
+        10
+         - 
+        40
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BarDisplay snapshots > renders idle state 1`] = `
+<div>
+  <div
+    class="bar-display"
+  >
+    <div
+      class="bar-container"
+      style="max-width: 100%;"
+    >
+      <div
+        aria-label="Position 1, Value: 10"
+        class="bar"
+        data-index="0"
+        data-value="10"
+        role="img"
+        style="height: 25%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 1, Value: 10"
+      />
+      <div
+        aria-label="Position 2, Value: 20"
+        class="bar"
+        data-index="1"
+        data-value="20"
+        role="img"
+        style="height: 50%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 2, Value: 20"
+      />
+      <div
+        aria-label="Position 3, Value: 30"
+        class="bar"
+        data-index="2"
+        data-value="30"
+        role="img"
+        style="height: 75%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 3, Value: 30"
+      />
+      <div
+        aria-label="Position 4, Value: 40"
+        class="bar"
+        data-index="3"
+        data-value="40"
+        role="img"
+        style="height: 100%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 4, Value: 40"
+      />
+      <div
+        aria-label="Position 5, Value: 25"
+        class="bar"
+        data-index="4"
+        data-value="25"
+        role="img"
+        style="height: 62.5%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 5, Value: 25"
+      />
+      <div
+        aria-label="Position 6, Value: 15"
+        class="bar"
+        data-index="5"
+        data-value="15"
+        role="img"
+        style="height: 37.5%; width: 4px; margin-right: 0px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 6, Value: 15"
+      />
+    </div>
+    <div
+      class="flex gap-4 array-info"
+    >
+      <span
+        class="text-sm"
+      >
+        Array Size: 
+        6
+      </span>
+      <span
+        class="text-sm"
+      >
+        Range: 
+        10
+         - 
+        40
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BarDisplay snapshots > renders insert state 1`] = `
+<div>
+  <div
+    class="bar-display"
+  >
+    <div
+      class="bar-container"
+      style="max-width: 100%;"
+    >
+      <div
+        aria-label="Position 1, Value: 10"
+        class="bar"
+        data-index="0"
+        data-value="10"
+        role="img"
+        style="height: 25%; width: 4px; margin-right: 2px; background-color: var(--bar-sorted-color); opacity: 1; transition: none;"
+        title="Position 1, Value: 10"
+      />
+      <div
+        aria-label="Position 2, Value: 20 - Inserting"
+        class="bar"
+        data-index="1"
+        data-value="20"
+        role="img"
+        style="height: 50%; width: 4px; margin-right: 2px; background-color: var(--bar-insert-color); border: 2px solid var(--bar-border-color); opacity: 1; transition: none;"
+        title="Position 2, Value: 20 - Inserting"
+      />
+      <div
+        aria-label="Position 3, Value: 30"
+        class="bar"
+        data-index="2"
+        data-value="30"
+        role="img"
+        style="height: 75%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 3, Value: 30"
+      />
+      <div
+        aria-label="Position 4, Value: 40"
+        class="bar"
+        data-index="3"
+        data-value="40"
+        role="img"
+        style="height: 100%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 4, Value: 40"
+      />
+      <div
+        aria-label="Position 5, Value: 25"
+        class="bar"
+        data-index="4"
+        data-value="25"
+        role="img"
+        style="height: 62.5%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 5, Value: 25"
+      />
+      <div
+        aria-label="Position 6, Value: 15"
+        class="bar"
+        data-index="5"
+        data-value="15"
+        role="img"
+        style="height: 37.5%; width: 4px; margin-right: 0px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 6, Value: 15"
+      />
+    </div>
+    <div
+      aria-live="polite"
+      class="flex flex-col gap-1 step-indicator"
+      role="status"
+    >
+      <span
+        class="font-semibold text-sm"
+      >
+        INSERT
+      </span>
+      <span
+        class="text-sm"
+      >
+        Inserting
+      </span>
+    </div>
+    <div
+      class="flex gap-4 array-info"
+    >
+      <span
+        class="text-sm"
+      >
+        Array Size: 
+        6
+      </span>
+      <span
+        class="text-sm"
+      >
+        Range: 
+        10
+         - 
+        40
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BarDisplay snapshots > renders merge state 1`] = `
+<div>
+  <div
+    class="bar-display"
+  >
+    <div
+      class="bar-container"
+      style="max-width: 100%;"
+    >
+      <div
+        aria-label="Position 1, Value: 10 - Merging"
+        class="bar"
+        data-index="0"
+        data-value="10"
+        role="img"
+        style="height: 25%; width: 4px; margin-right: 2px; background-color: var(--bar-merge-color); border: 2px solid var(--bar-border-color); opacity: 1; transition: none;"
+        title="Position 1, Value: 10 - Merging"
+      />
+      <div
+        aria-label="Position 2, Value: 20 - Merging"
+        class="bar"
+        data-index="1"
+        data-value="20"
+        role="img"
+        style="height: 50%; width: 4px; margin-right: 2px; background-color: var(--bar-merge-color); border: 2px solid var(--bar-border-color); opacity: 1; transition: none;"
+        title="Position 2, Value: 20 - Merging"
+      />
+      <div
+        aria-label="Position 3, Value: 30"
+        class="bar"
+        data-index="2"
+        data-value="30"
+        role="img"
+        style="height: 75%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 3, Value: 30"
+      />
+      <div
+        aria-label="Position 4, Value: 40"
+        class="bar"
+        data-index="3"
+        data-value="40"
+        role="img"
+        style="height: 100%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 4, Value: 40"
+      />
+      <div
+        aria-label="Position 5, Value: 25"
+        class="bar"
+        data-index="4"
+        data-value="25"
+        role="img"
+        style="height: 62.5%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 5, Value: 25"
+      />
+      <div
+        aria-label="Position 6, Value: 15"
+        class="bar"
+        data-index="5"
+        data-value="15"
+        role="img"
+        style="height: 37.5%; width: 4px; margin-right: 0px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 6, Value: 15"
+      />
+    </div>
+    <div
+      aria-live="polite"
+      class="flex flex-col gap-1 step-indicator"
+      role="status"
+    >
+      <span
+        class="font-semibold text-sm"
+      >
+        MERGE
+      </span>
+      <span
+        class="text-sm"
+      >
+        Merging
+      </span>
+    </div>
+    <div
+      class="flex gap-4 array-info"
+    >
+      <span
+        class="text-sm"
+      >
+        Array Size: 
+        6
+      </span>
+      <span
+        class="text-sm"
+      >
+        Range: 
+        10
+         - 
+        40
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BarDisplay snapshots > renders swap state 1`] = `
+<div>
+  <div
+    class="bar-display"
+  >
+    <div
+      class="bar-container"
+      style="max-width: 100%;"
+    >
+      <div
+        aria-label="Position 1, Value: 10"
+        class="bar"
+        data-index="0"
+        data-value="10"
+        role="img"
+        style="height: 25%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 1, Value: 10"
+      />
+      <div
+        aria-label="Position 2, Value: 20"
+        class="bar"
+        data-index="1"
+        data-value="20"
+        role="img"
+        style="height: 50%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 2, Value: 20"
+      />
+      <div
+        aria-label="Position 3, Value: 30 - Swapping"
+        class="bar"
+        data-index="2"
+        data-value="30"
+        role="img"
+        style="height: 75%; width: 4px; margin-right: 2px; background-color: var(--bar-swap-color); border: 2px solid var(--bar-border-color); opacity: 1; transition: none;"
+        title="Position 3, Value: 30 - Swapping"
+      />
+      <div
+        aria-label="Position 4, Value: 40 - Swapping"
+        class="bar"
+        data-index="3"
+        data-value="40"
+        role="img"
+        style="height: 100%; width: 4px; margin-right: 2px; background-color: var(--bar-swap-color); border: 2px solid var(--bar-border-color); opacity: 1; transition: none;"
+        title="Position 4, Value: 40 - Swapping"
+      />
+      <div
+        aria-label="Position 5, Value: 25"
+        class="bar"
+        data-index="4"
+        data-value="25"
+        role="img"
+        style="height: 62.5%; width: 4px; margin-right: 2px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 5, Value: 25"
+      />
+      <div
+        aria-label="Position 6, Value: 15"
+        class="bar"
+        data-index="5"
+        data-value="15"
+        role="img"
+        style="height: 37.5%; width: 4px; margin-right: 0px; background-color: var(--bar-default-color); opacity: 1; transition: none;"
+        title="Position 6, Value: 15"
+      />
+    </div>
+    <div
+      aria-live="polite"
+      class="flex flex-col gap-1 step-indicator"
+      role="status"
+    >
+      <span
+        class="font-semibold text-sm"
+      >
+        SWAP
+      </span>
+      <span
+        class="text-sm"
+      >
+        Swapping
+      </span>
+    </div>
+    <div
+      class="flex gap-4 array-info"
+    >
+      <span
+        class="text-sm"
+      >
+        Array Size: 
+        6
+      </span>
+      <span
+        class="text-sm"
+      >
+        Range: 
+        10
+         - 
+        40
+      </span>
+    </div>
+  </div>
+</div>
+`;
