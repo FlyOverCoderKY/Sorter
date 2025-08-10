@@ -42,3 +42,27 @@ jobs:
           name: app-ui-dist
           path: App.UI/dist
 
+  deploy:
+    name: Deploy to Azure Static Web Apps
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-ui-dist
+          path: App.UI/dist
+
+      - name: Deploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          action: upload
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AMBITIOUS_FOREST_09B440910 }}
+          app_location: App.UI
+          output_location: dist
+          skip_app_build: true
+
