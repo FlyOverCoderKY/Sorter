@@ -1,4 +1,10 @@
 /* Gradient background */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .gradient-bg {
   background: linear-gradient(
     135deg,
