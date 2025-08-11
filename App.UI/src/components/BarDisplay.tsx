@@ -19,8 +19,7 @@ const Bar = React.memo<{
   isLast: boolean;
   currentStep: SortingStep | null;
   isRunning: boolean;
-  isSizeChanging: boolean;
-}>(({ value, index, maxValue, barWidth, spacing, isLast, currentStep, isRunning, isSizeChanging }) => {
+}>(({ value, index, maxValue, barWidth, spacing, isLast, currentStep, isRunning }) => {
   // Memoized color calculation
   const backgroundColor = useMemo(() => {
     if (!currentStep || !isRunning) {
@@ -90,8 +89,8 @@ const Bar = React.memo<{
     return tooltipText;
   }, [currentStep, isRunning, index, value]);
 
-  // Only apply transitions when size is changing, not during sorting
-  const transition = isSizeChanging ? 'width 0.3s ease, margin-right 0.3s ease' : 'none';
+  // Disable layout-affecting transitions to prevent width jump during size changes
+  const transition = 'none';
 
   return (
     <div
@@ -119,29 +118,20 @@ Bar.displayName = 'Bar';
 const BarDisplay = React.memo<BarDisplayProps>(({ array, currentStep, isRunning }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const maxValue = Math.max(...array, 1);
-  const [isSizeChanging, setIsSizeChanging] = useState(false);
+  // Keep flag for future subtle animations, but not used to avoid layout jumps
   const [prevArraySize, setPrevArraySize] = useState(array.length);
 
   // Calculate bar dimensions based on container width and array size
   const barDimensions = useMemo(() => {
-    if (!containerRef.current) return { barWidth: 4, spacing: 2, totalWidth: 0 };
-    
-    const containerWidth = containerRef.current.clientWidth;
-    return calculateBarDimensions(containerWidth, array.length);
+    // Use a snapshot of width to avoid reactive layout jumps
+    const width = containerRef.current?.clientWidth ?? 0;
+    return calculateBarDimensions(width, array.length);
   }, [array.length]);
 
-  // Track array size changes for smooth transitions
+  // Track array size changes to force a stable layout without transitions
   useEffect(() => {
     if (prevArraySize !== array.length) {
-      setIsSizeChanging(true);
       setPrevArraySize(array.length);
-      
-      // Reset the size changing flag after transition completes
-      const timer = setTimeout(() => {
-        setIsSizeChanging(false);
-      }, 300); // Match the transition duration
-      
-      return () => clearTimeout(timer);
     }
   }, [array.length, prevArraySize]);
 
@@ -174,7 +164,7 @@ const BarDisplay = React.memo<BarDisplayProps>(({ array, currentStep, isRunning 
       <div 
         className="bar-container"
         style={{
-          maxWidth: '100%'
+          width: '100%'
         }}
       >
         {array.map((value, index) => (
@@ -188,7 +178,6 @@ const BarDisplay = React.memo<BarDisplayProps>(({ array, currentStep, isRunning 
             isLast={index === array.length - 1}
             currentStep={currentStep}
             isRunning={isRunning}
-            isSizeChanging={isSizeChanging}
           />
         ))}
       </div>
