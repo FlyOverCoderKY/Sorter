@@ -117,16 +117,21 @@ Bar.displayName = 'Bar';
 
 const BarDisplay = React.memo<BarDisplayProps>(({ array, currentStep, isRunning }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const barContainerRef = useRef<HTMLDivElement>(null);
   const maxValue = Math.max(...array, 1);
   // Keep flag for future subtle animations, but not used to avoid layout jumps
   const [prevArraySize, setPrevArraySize] = useState(array.length);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [lockedWidthPx, setLockedWidthPx] = useState<number | null>(null);
 
   // Calculate bar dimensions based on container width and array size
   const barDimensions = useMemo(() => {
-    // Use a snapshot of width to avoid reactive layout jumps
-    const width = containerRef.current?.clientWidth ?? 0;
+    const currentWidth = lockedWidthPx ?? containerWidth > 0
+      ? containerWidth
+      : (barContainerRef.current?.clientWidth ?? containerRef.current?.clientWidth ?? 0);
+    const width = typeof currentWidth === 'number' ? currentWidth : 0;
     return calculateBarDimensions(width, array.length);
-  }, [array.length]);
+  }, [array.length, containerWidth, lockedWidthPx]);
 
   // Track array size changes to force a stable layout without transitions
   useEffect(() => {
@@ -135,17 +140,12 @@ const BarDisplay = React.memo<BarDisplayProps>(({ array, currentStep, isRunning 
     }
   }, [array.length, prevArraySize]);
 
-  // Update bar dimensions on window resize
+  // Lock width on first mount so changing array size won't change the BarDisplay width
   useEffect(() => {
-    const handleResize = () => {
-      // Force re-render by updating a state or ref
-      if (containerRef.current) {
-        containerRef.current.style.width = containerRef.current.clientWidth + 'px';
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const element = barContainerRef.current ?? containerRef.current;
+    const width = element?.clientWidth ?? 0;
+    setLockedWidthPx(width);
+    setContainerWidth(width);
   }, []);
 
   if (array.length === 0) {
@@ -160,9 +160,14 @@ const BarDisplay = React.memo<BarDisplayProps>(({ array, currentStep, isRunning 
   }
 
   return (
-    <div className="bar-display" ref={containerRef}>
+    <div
+      className="bar-display"
+      ref={containerRef}
+      style={lockedWidthPx ? { width: `${lockedWidthPx}px`, margin: '0 auto' } : undefined}
+    >
       <div 
         className="bar-container"
+        ref={barContainerRef}
         style={{
           width: '100%'
         }}
