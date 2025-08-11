@@ -11,7 +11,7 @@
   flex: 1;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: flex-start; /* keep bars anchored to the left to avoid layout shifts */
   padding: 24px;
   position: relative;
   overflow: hidden;
@@ -26,8 +26,8 @@
   position: relative;
   cursor: pointer;
   box-shadow: 0 1px 3px var(--color-shadow);
-  /* Remove all transitions to prevent flickering during sorting */
-  transition: none;
+  /* Avoid width/spacing transitions to eliminate layout jumps */
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .bar:hover {

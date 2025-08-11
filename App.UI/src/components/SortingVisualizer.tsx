@@ -6,17 +6,12 @@ import { ALGORITHMS } from '../data/algorithms';
 import ControlPanel from './ControlPanel';
 import BarDisplay from './BarDisplay';
 import AlgorithmExplanation from './AlgorithmExplanation';
-import { ThemeSwitcher } from './ThemeSwitcher';
-import { useTheme } from '../context/ThemeContext';
 import './SortingVisualizer.css';
 import { SortingAlgorithms } from '../algorithms/SortingAlgorithms';
 
 // Use shared, tested step generators to keep step-mode aligned with the worker
 
 const SortingVisualizer: React.FC = () => {
-  // Theme management
-  const theme = useTheme();
-  
   // State management
   const [array, setArray] = useState<number[]>([]);
   const [currentAlgorithm, setCurrentAlgorithm] = useState<AlgorithmType>('bubble');
@@ -385,21 +380,6 @@ const SortingVisualizer: React.FC = () => {
 
   return (
     <div className="sorting-visualizer" role="main" aria-label="Sorting Algorithm Visualizer">
-      <header className="visualizer-header">
-        <div className="header-content">
-          <div className="header-text">
-            <h1>Sorting Algorithm Visualizer</h1>
-            <p>Watch different sorting algorithms in action and learn how they work</p>
-          </div>
-          <div className="header-controls">
-            <ThemeSwitcher
-              appearance={theme.appearance}
-              onAppearanceChange={theme.setAppearance}
-            />
-          </div>
-        </div>
-      </header>
-      
       <div className="visualizer-content">
         {/* Deterministic completion marker for tests */}
         <div id="sort-status" data-complete={sortCompleted ? 'true' : 'false'} style={{ display: 'none' }} />
