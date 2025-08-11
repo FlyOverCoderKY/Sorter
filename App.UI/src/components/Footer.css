@@ -20,4 +20,15 @@
   color: var(--color-foreground-muted);
 }
 
+.site-footer__link {
+  color: var(--color-foreground);
+  text-decoration: underline;
+}
+
+.site-footer__link:hover,
+.site-footer__link:focus-visible {
+  color: var(--color-foreground);
+  text-decoration-thickness: 2px;
+}
+
 
