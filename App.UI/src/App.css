@@ -1,3 +1,10 @@
+/* App root layout */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Gradient background */
 .gradient-bg {
   background: linear-gradient(

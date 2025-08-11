@@ -1,6 +1,6 @@
 .bar-display {
   width: 100%;
-  height: 1200px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -135,7 +135,8 @@
 /* Responsive design */
 @media (max-width: 767px) {
   .bar-display {
-    height: 800px;
+    height: auto;
+    min-height: 400px;
   }
   
   .bar-container {
